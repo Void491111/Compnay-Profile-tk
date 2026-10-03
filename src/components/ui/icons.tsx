@@ -1,8 +1,3 @@
-/**
- * Ikon SVG inline (gaya garis, 24×24). Dekoratif — selalu `aria-hidden`, jadi
- * teks di sebelahnya yang membawa makna.
- */
-
 import type { ReactNode } from "react";
 import type { FacilityIcon as FacilityIconName, HighlightIcon as HighlightIconName } from "@/types";
 

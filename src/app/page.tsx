@@ -22,7 +22,7 @@ import {
 
 function MiniStat({ icon, value, label }: { icon: ReactNode; value: string; label: string }) {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex flex-col gap-2">
       <span className="text-navy-500">{icon}</span>
       <div className="flex flex-col-reverse">
         <dt className="mt-1 text-xs text-muted">{label}</dt>
@@ -42,12 +42,10 @@ export default async function HomePage() {
     getPpdbInfo(),
   ]);
   const summary = await getEnrollmentSummary(ppdb.academicYear);
-  // Tagline "Tumbuh ceria, belajar bermakna" dipecah jadi dua baris berwarna.
   const [taglineLead, taglineAccent] = siteConfig.tagline.split(", ");
 
   return (
     <>
-      {/* Hero */}
       <section className="relative bg-cream">
         <Container className="grid items-center gap-12 pb-28 pt-14 lg:grid-cols-[1.05fr_1fr] lg:pb-36 lg:pt-20">
           <div>
@@ -89,7 +87,6 @@ export default async function HomePage() {
         <HighlightBar highlights={highlights} />
       </Container>
 
-      {/* Tentang */}
       <section aria-labelledby="judul-tentang" className="py-20">
         <Container className="grid items-center gap-10 lg:grid-cols-[1.1fr_1.2fr_0.8fr]">
           <div>
@@ -103,7 +100,7 @@ export default async function HomePage() {
             <ButtonLink href="/tentang" className="mt-6" arrow>
               Selengkapnya
             </ButtonLink>
-            <dl className="mt-8 flex flex-wrap gap-x-8 gap-y-4">
+            <dl className="mt-8 grid grid-cols-3 gap-4">
               <MiniStat icon={<CalendarIcon />} value={`${stats.yearsRunning}+`} label="Tahun berdiri" />
               <MiniStat icon={<UsersIcon />} value={formatNumber(stats.studentCount)} label="Murid aktif" />
               <MiniStat icon={<AwardIcon />} value={profile.accreditation.split(" ")[0]} label="Akreditasi" />
@@ -130,7 +127,6 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* Program */}
       <section aria-labelledby="judul-program" className="bg-cream py-20">
         <Container>
           <SectionHeading
@@ -153,25 +149,22 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* Statistik */}
       <section aria-label="Sekolah dalam angka" className="py-10">
         <Container>
-          <dl className="grid gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="grid gap-px overflow-hidden rounded-xl bg-navy-700 shadow-lg sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: <CalendarIcon className="size-8" />, value: `${stats.yearsRunning}+`, label: "Tahun pengalaman" },
-              { icon: <UsersIcon className="size-8" />, value: formatNumber(stats.studentCount), label: "Murid aktif" },
-              { icon: <AwardIcon className="size-8" />, value: `${stats.teacherCount}`, label: "Guru berpengalaman" },
-              {
-                icon: <CheckIcon className="size-8" />,
-                value: formatPercent(summary.quotaFilledPercent),
-                label: `Kuota PPDB ${ppdb.academicYear} terisi`,
-              },
+              { icon: <CalendarIcon />, value: `${stats.yearsRunning}+`, label: "Tahun pengalaman" },
+              { icon: <UsersIcon />, value: formatNumber(stats.studentCount), label: "Murid aktif" },
+              { icon: <AwardIcon />, value: `${stats.teacherCount}`, label: "Guru berpengalaman" },
+              { icon: <CheckIcon />, value: formatPercent(summary.quotaFilledPercent), label: "Kuota PPDB terisi" },
             ].map((item) => (
-              <div key={item.label} className="flex items-center gap-4 bg-navy-900 px-6 py-7">
-                <span className="text-gold-400">{item.icon}</span>
-                <div className="flex flex-col-reverse">
-                  <dt className="mt-1.5 text-sm text-white/75">{item.label}</dt>
-                  <dd className="font-serif text-3xl leading-none text-gold-400">{item.value}</dd>
+              <div key={item.label} className="group flex items-center gap-4 bg-navy-900 px-6 py-8">
+                <span className="grid size-12 shrink-0 place-items-center rounded-full border border-gold-400/40 text-gold-400 transition-colors duration-300 group-hover:bg-gold-400 group-hover:text-navy-900">
+                  {item.icon}
+                </span>
+                <div className="flex min-w-0 flex-col-reverse">
+                  <dt className="mt-2 truncate text-sm text-white/75">{item.label}</dt>
+                  <dd className="font-serif text-4xl leading-none text-gold-400">{item.value}</dd>
                 </div>
               </div>
             ))}
@@ -179,7 +172,6 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* PPDB */}
       <section aria-labelledby="judul-ppdb" className="py-10">
         <Container>
           <div className="grid overflow-hidden rounded-xl border border-line lg:grid-cols-2">
@@ -224,7 +216,6 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* Pengumuman */}
       <section aria-labelledby="judul-kabar" className="py-20">
         <Container>
           <SectionHeading id="judul-kabar" eyebrow="Kabar sekolah" title="Pengumuman terbaru" />

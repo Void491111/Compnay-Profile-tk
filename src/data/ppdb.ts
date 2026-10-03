@@ -1,10 +1,3 @@
-/**
- * Data PPDB dan laporan bulanan (dummy).
- *
- * Laporan hanya berisi angka agregat. Laporan dengan `published: false` adalah
- * draf dan tidak pernah ditampilkan ke publik — penyaringan dilakukan di service.
- */
-
 import type { EnrollmentReport, PpdbInfo } from "@/types";
 
 export const ppdbInfo: PpdbInfo = {
@@ -82,12 +75,10 @@ export const ppdbInfo: PpdbInfo = {
   updatedAt: "2026-09-28",
 };
 
-/** Kuota total murid baru untuk semua kelompok dalam satu tahun ajaran. */
 const QUOTA_2026 = 50;
 const QUOTA_2027 = 55;
 
 export const enrollmentReports: readonly EnrollmentReport[] = [
-  // Tahun ajaran 2026/2027 (periode PPDB Juli 2025 – Juni 2026)
   { id: "2025-09", year: 2025, month: 9, applicants: 8, accepted: 7, quota: QUOTA_2026, published: true, updatedAt: "2025-10-02" },
   { id: "2025-10", year: 2025, month: 10, applicants: 11, accepted: 10, quota: QUOTA_2026, published: true, updatedAt: "2025-11-03" },
   { id: "2025-11", year: 2025, month: 11, applicants: 9, accepted: 8, quota: QUOTA_2026, published: true, updatedAt: "2025-12-01" },
@@ -107,7 +98,6 @@ export const enrollmentReports: readonly EnrollmentReport[] = [
   },
   { id: "2026-04", year: 2026, month: 4, applicants: 2, accepted: 2, quota: QUOTA_2026, note: "Pendaftaran ditutup.", published: true, updatedAt: "2026-05-04" },
 
-  // Tahun ajaran 2027/2028 (periode PPDB Juli 2026 – Juni 2027)
   {
     id: "2026-09",
     year: 2026,
@@ -119,6 +109,5 @@ export const enrollmentReports: readonly EnrollmentReport[] = [
     published: true,
     updatedAt: "2026-10-01",
   },
-  // Draf — belum diverifikasi, tidak tampil di situs.
   { id: "2026-10", year: 2026, month: 10, applicants: 3, accepted: 1, quota: QUOTA_2027, published: false, updatedAt: "2026-10-03" },
 ];

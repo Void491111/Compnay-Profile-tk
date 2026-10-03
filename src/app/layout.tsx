@@ -8,7 +8,6 @@ import "./globals.css";
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  // Poppins bukan variable font, jadi ketebalan yang dipakai harus disebutkan.
   weight: ["400", "500", "600", "700"],
 });
 
@@ -18,8 +17,6 @@ const dmSerif = DM_Serif_Display({
   weight: "400",
 });
 
-// Halaman statis dirender ulang tiap hari, supaya angka berbasis tanggal
-// (tahun di footer, lama berdiri) tidak beku sejak deploy terakhir.
 export const revalidate = 86400;
 
 export const viewport: Viewport = {

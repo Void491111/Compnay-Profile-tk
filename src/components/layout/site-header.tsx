@@ -83,7 +83,6 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-3">
-            {/* Dibungkus agar `hidden` tidak bentrok dengan `inline-flex` milik ButtonLink. */}
             <div className="hidden sm:block">
               <ButtonLink href="/ppdb" variant="gold">
                 Daftar sekarang

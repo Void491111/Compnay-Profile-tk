@@ -4,28 +4,21 @@ import { PhotoPlaceholder } from "@/components/ui/primitives";
 import { formatIsoDate } from "@/lib/format";
 import type { Announcement, Facility, GalleryCategory, GalleryItem, Highlight, Program } from "@/types";
 
-/**
- * Aturan kartu: setiap blok teks dibatasi jumlah barisnya (`line-clamp`) dan
- * diberi tinggi minimum yang sama, kartu mengisi penuh tinggi baris grid, dan
- * bagian bawahnya didorong ke dasar (`mt-auto`). Dengan begitu panjang teks
- * tidak pernah mengubah ukuran atau kesejajaran kartu.
- */
 const CARD_HOVER =
   "transition duration-300 ease-out hover:shadow-lg motion-safe:hover:-translate-y-1";
 const PHOTO_ZOOM = "transition-transform duration-500 ease-out motion-safe:group-hover:scale-105";
 
-/** Bar keunggulan navy di bawah hero beranda. */
 export function HighlightBar({ highlights }: { highlights: readonly Highlight[] }) {
   return (
-    <ul className="grid gap-px overflow-hidden rounded-xl bg-white/10 shadow-xl sm:grid-cols-2 lg:grid-cols-5">
+    <ul className="grid gap-px overflow-hidden rounded-xl bg-navy-700 shadow-xl sm:grid-cols-2 lg:grid-cols-5">
       {highlights.map((highlight) => (
-        <li key={highlight.id} className="group flex gap-4 bg-navy-900 p-5 text-white">
-          <span className="grid size-12 shrink-0 place-items-center rounded-full border border-gold-400/60 text-gold-400 transition-colors duration-300 group-hover:bg-gold-400 group-hover:text-navy-900">
+        <li key={highlight.id} className="group flex gap-3 bg-navy-900 p-5 text-white">
+          <span className="grid size-10 shrink-0 place-items-center rounded-full border border-gold-400/60 text-gold-400 transition-colors duration-300 group-hover:bg-gold-400 group-hover:text-navy-900">
             <HighlightIcon name={highlight.icon} />
           </span>
           <div className="min-w-0">
             <h3 className="text-sm font-semibold">{highlight.title}</h3>
-            <p className="mt-1 line-clamp-3 text-xs leading-relaxed text-white/70">{highlight.description}</p>
+            <p className="mt-1 text-xs leading-relaxed text-white/70">{highlight.description}</p>
           </div>
         </li>
       ))}
@@ -33,7 +26,6 @@ export function HighlightBar({ highlights }: { highlights: readonly Highlight[] 
   );
 }
 
-/** Kartu ringkas untuk beranda: foto, nama, deskripsi singkat, usia. */
 export function ProgramTile({ program }: { program: Program }) {
   return (
     <Link
@@ -52,7 +44,6 @@ export function ProgramTile({ program }: { program: Program }) {
   );
 }
 
-/** Kartu halaman Program: foto, nama, satu kalimat, poin singkat, jadwal & kapasitas. */
 export function ProgramCard({ program }: { program: Program }) {
   return (
     <article
@@ -146,13 +137,6 @@ export const GALLERY_CATEGORY_LABELS: Record<GalleryCategory, string> = {
   prestasi: "Prestasi",
 };
 
-/**
- * Belum ada foto asli, jadi tiap item memakai `PhotoPlaceholder` yang tetap
- * membawa teks `alt`. Saat foto tersedia, ganti dengan `next/image`.
- *
- * Keterangan foto punya tinggi tetap (`h-20`) dan judul maksimal dua baris,
- * jadi semua kartu sama besar berapa pun panjang judulnya.
- */
 export function GalleryGrid({ items }: { items: readonly GalleryItem[] }) {
   return (
     <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

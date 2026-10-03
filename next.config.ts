@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Tidak perlu memberi tahu pengunjung bahwa situs memakai Next.js.
   poweredByHeader: false,
 
   async headers() {

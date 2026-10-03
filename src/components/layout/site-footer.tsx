@@ -7,10 +7,6 @@ import { getPpdbInfo } from "@/services/ppdb";
 const LINK_CLASS =
   "bg-linear-to-r from-white to-white bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-0.5 text-white/70 transition-all duration-300 hover:bg-[length:100%_1px] hover:text-white";
 
-/**
- * Tata letak mengikuti referensi footer: kolom tautan di kiri, panel ajakan
- * terpisah garis vertikal di kanan, lalu bar copyright di bawah.
- */
 export async function SiteFooter() {
   const ppdb = await getPpdbInfo();
   const { contact } = siteConfig;

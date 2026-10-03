@@ -3,10 +3,6 @@
 import { useEffect } from "react";
 import { ButtonLink, Container } from "@/components/ui/primitives";
 
-/**
- * Tampil bila sebuah halaman gagal dirender. Header dan footer tetap tampil
- * karena berada di root layout, di luar error boundary ini.
- */
 export default function ErrorPage({ error, retry }: { error: Error & { digest?: string }; retry: () => void }) {
   useEffect(() => {
     console.error(error);

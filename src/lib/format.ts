@@ -1,8 +1,3 @@
-/**
- * Fungsi format murni (pure). Tidak menyentuh React, data, maupun I/O —
- * supaya bisa dipakai di server dan client, dan mudah diuji.
- */
-
 import type { FeePeriod } from "@/types";
 
 const MONTH_NAMES = [
@@ -36,7 +31,6 @@ export function formatNumber(value: number): string {
   return numberFormatter.format(value);
 }
 
-/** Mengubah nomor bulan 1–12 menjadi nama bulan Indonesia. */
 export function formatMonthName(month: number): string {
   return MONTH_NAMES[month - 1] ?? "Bulan tidak valid";
 }
@@ -45,7 +39,6 @@ export function formatMonthYear(month: number, year: number): string {
   return `${formatMonthName(month)} ${year}`;
 }
 
-/** Mengubah `YYYY-MM-DD` menjadi `4 Oktober 2026`. */
 export function formatIsoDate(isoDate: string): string {
   const date = new Date(isoDate);
 
@@ -60,7 +53,6 @@ export function formatIsoDate(isoDate: string): string {
   }).format(date);
 }
 
-/** Menggabungkan dua tanggal jadi satu rentang yang ringkas. */
 export function formatDateRange(startIso: string, endIso: string): string {
   if (startIso === endIso) {
     return formatIsoDate(startIso);

@@ -1,8 +1,3 @@
-/**
- * Komponen tampilan kecil yang dipakai lintas halaman. Semuanya server component
- * dan tidak mengambil data sendiri — data selalu datang lewat props.
- */
-
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { ArrowRightIcon, CameraIcon } from "@/components/ui/icons";
@@ -13,7 +8,6 @@ export function Container({ className = "", children }: { className?: string; ch
   return <div className={`mx-auto w-full max-w-6xl px-4 sm:px-6 ${className}`}>{children}</div>;
 }
 
-/** Lambang sementara berbentuk perisai. Ganti dengan logo asli bila sudah ada. */
 function Emblem() {
   return (
     <span aria-hidden="true" className="relative grid h-12 w-11 shrink-0 place-items-center">
@@ -73,7 +67,6 @@ export function SectionHeading({
 }: {
   eyebrow?: string;
   title: string;
-  /** Baris kedua judul, diberi warna emas seperti di hero. */
   accent?: string;
   description?: string;
   id?: string;
@@ -102,7 +95,6 @@ const BUTTON_VARIANTS = {
 
 type ButtonLinkProps = ComponentProps<typeof Link> & {
   variant?: keyof typeof BUTTON_VARIANTS;
-  /** Tampilkan panah di kanan, seperti tombol utama di mockup. */
   arrow?: boolean;
 };
 
@@ -160,10 +152,6 @@ export function ProgressBar({ value, label }: { value: number; label: string }) 
   );
 }
 
-/**
- * Bingkai pengganti foto. Teks `alt` tetap dibacakan pembaca layar, jadi saat
- * foto asli tersedia cukup ganti komponen ini dengan `next/image` ber-alt sama.
- */
 export function PhotoPlaceholder({ alt, className = "" }: { alt: string; className?: string }) {
   return (
     <div

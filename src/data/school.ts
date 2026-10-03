@@ -1,7 +1,3 @@
-/**
- * Data profil sekolah (dummy). Ganti isinya di sini; komponen tidak perlu diubah.
- */
-
 import type { Announcement, Facility, GalleryItem, Highlight, Program, SchoolProfile } from "@/types";
 
 export const schoolProfile: SchoolProfile = {

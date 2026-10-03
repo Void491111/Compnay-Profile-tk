@@ -1,16 +1,3 @@
-/**
- * Identitas sekolah dan konfigurasi situs.
- *
- * NAMA SEKOLAH MASIH DUMMY. Untuk menggantinya, ubah di file ini saja — tidak
- * ada nama sekolah yang di-hardcode di komponen mana pun.
- */
-
-/**
- * URL publik situs, dipakai untuk metadata, sitemap, dan robots.txt.
- *
- * Urutan: `NEXT_PUBLIC_SITE_URL` (isi saat domain final ada) → domain produksi
- * yang disediakan Vercel otomatis → localhost saat pengembangan.
- */
 function resolveSiteUrl(): string {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL;
   if (explicit) {
@@ -26,11 +13,8 @@ function resolveSiteUrl(): string {
 }
 
 export const siteConfig = {
-  /** Nama resmi, dipakai di judul halaman dan footer. */
   name: "TK Tunas Ceria",
-  /** Nama pendek untuk logo dan navigasi. */
   shortName: "Tunas Ceria",
-  /** Inisial untuk lambang sementara, sebelum ada logo asli. */
   initials: "TC",
   tagline: "Tumbuh ceria, belajar bermakna",
   description:
@@ -38,12 +22,12 @@ export const siteConfig = {
     "pembiasaan karakter, dan pendampingan guru yang hangat.",
   url: resolveSiteUrl(),
   contact: {
-    address: "Jl. Melati Raya No. 12, Kelurahan Sukamaju, Bandung 40123",
-    phone: "(022) 1234 5678",
+    address: "Jl. Ahmad Yani, Batam Kota, Kota Batam, Kepulauan Riau 29461",
+    phone: "(0778) 123 4567",
     whatsapp: "6281234567890",
     email: "halo@tunasceria.sch.id",
     operationalHours: "Senin – Jumat, 07.00 – 14.00 WIB",
-    mapsQuery: "Jl. Melati Raya No. 12 Bandung",
+    mapsQuery: "Politeknik Negeri Batam",
   },
 } as const;
 
@@ -52,7 +36,6 @@ export interface NavItem {
   readonly label: string;
 }
 
-/** Sumber tunggal untuk navigasi header dan footer. */
 export const navItems: readonly NavItem[] = [
   { href: "/", label: "Beranda" },
   { href: "/tentang", label: "Tentang" },
@@ -74,7 +57,6 @@ export interface NavGroup {
   readonly items: readonly NavItem[];
 }
 
-/** Kolom tautan di footer. Kontak tidak di sini karena diambil dari `siteConfig.contact`. */
 export const footerNavGroups: readonly NavGroup[] = [
   {
     title: "Jelajahi",

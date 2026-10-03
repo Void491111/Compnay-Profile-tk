@@ -16,7 +16,6 @@ export default async function ReportPage({ searchParams }: PageProps<"/laporan">
     getReportAcademicYears(),
   ]);
 
-  // Tahun yang tidak dikenal jatuh ke tahun ajaran PPDB yang sedang berjalan.
   const academicYear = typeof tahun === "string" && academicYears.includes(tahun) ? tahun : ppdb.academicYear;
   const reports = await getPublishedReports(academicYear);
   const summary = summarizeReports(academicYear, reports);
@@ -87,9 +86,6 @@ export default async function ReportPage({ searchParams }: PageProps<"/laporan">
           <SectionHeading id="judul-bulanan" eyebrow="Rincian" title="Laporan per bulan" />
 
           {reports.length > 0 ? (
-            // Lebar kolom dikunci (`table-fixed` + `colgroup`) dan tinggi baris tetap, jadi
-            // catatan yang panjang tidak bisa melebarkan kolom atau meninggikan baris.
-            // Catatan dipotong maksimal dua baris; teks lengkapnya ada di `title`.
             <div className="mt-6 overflow-x-auto rounded-xl border border-line bg-white shadow-sm">
               <table className="w-full min-w-[760px] table-fixed text-left text-sm">
                 <colgroup>
