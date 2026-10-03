@@ -41,4 +41,12 @@ Laporan PPDB bersifat publik, jadi hanya memuat angka agregat, tanpa data pribad
 
 ## Deploy
 
-Siap di-deploy ke Vercel: impor repo ini, pengaturan bawaan sudah cukup (pnpm terdeteksi otomatis). Setelah domain final ada, perbarui `url` di `src/config/site.ts`.
+Siap di-deploy ke Vercel: impor repo ini, pengaturan bawaan sudah cukup (pnpm terdeteksi otomatis). Butuh Node.js 20.9 atau lebih baru.
+
+Environment variable (lihat `.env.example`):
+
+| Nama | Wajib | Keterangan |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Tidak | Domain final, mis. `https://www.contoh-tk.sch.id`. Bila kosong, Vercel memakai domain produksinya sendiri. |
+
+Sudah termasuk: `sitemap.xml`, `robots.txt`, halaman 404 dan error, header keamanan dasar, serta render ulang harian untuk halaman statis.

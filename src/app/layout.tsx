@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Serif_Display, Poppins } from "next/font/google";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -17,6 +17,14 @@ const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
   weight: "400",
 });
+
+// Halaman statis dirender ulang tiap hari, supaya angka berbasis tanggal
+// (tahun di footer, lama berdiri) tidak beku sejak deploy terakhir.
+export const revalidate = 86400;
+
+export const viewport: Viewport = {
+  themeColor: "#0f2147",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),

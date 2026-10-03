@@ -5,6 +5,26 @@
  * ada nama sekolah yang di-hardcode di komponen mana pun.
  */
 
+/**
+ * URL publik situs, dipakai untuk metadata, sitemap, dan robots.txt.
+ *
+ * Urutan: `NEXT_PUBLIC_SITE_URL` (isi saat domain final ada) → domain produksi
+ * yang disediakan Vercel otomatis → localhost saat pengembangan.
+ */
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit) {
+    return explicit.replace(/\/+$/, "");
+  }
+
+  const vercelProduction = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (vercelProduction) {
+    return `https://${vercelProduction}`;
+  }
+
+  return "http://localhost:3000";
+}
+
 export const siteConfig = {
   /** Nama resmi, dipakai di judul halaman dan footer. */
   name: "TK Tunas Ceria",
@@ -16,7 +36,7 @@ export const siteConfig = {
   description:
     "Taman Kanak-kanak yang menumbuhkan rasa ingin tahu anak melalui bermain, " +
     "pembiasaan karakter, dan pendampingan guru yang hangat.",
-  url: "https://tk-profile.vercel.app",
+  url: resolveSiteUrl(),
   contact: {
     address: "Jl. Melati Raya No. 12, Kelurahan Sukamaju, Bandung 40123",
     phone: "(022) 1234 5678",
