@@ -1,4 +1,6 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
+import schoolPhoto from "../../public/international.jpg";
 import { AnnouncementList, HighlightBar, ProgramTile } from "@/components/sections/cards";
 import { AwardIcon, CalendarIcon, ChatIcon, CheckIcon, UsersIcon } from "@/components/ui/icons";
 import {
@@ -66,10 +68,18 @@ export default async function HomePage() {
           </div>
 
           <div className="relative">
-            <PhotoPlaceholder
-              alt="Anak-anak tersenyum saat bermain bersama guru di dalam kelas"
-              className="aspect-[5/4] rounded-2xl"
-            />
+            <div className="relative aspect-[5/4] overflow-hidden rounded-2xl bg-navy-100 shadow-lg">
+              <Image
+                src={schoolPhoto}
+                alt="Murid berjalan menuju gedung sekolah di sore hari, dengan bus sekolah kuning terparkir di samping"
+                fill
+                sizes="(min-width: 1152px) 540px, (min-width: 1024px) 47vw, 100vw"
+                placeholder="blur"
+                loading="eager"
+                fetchPriority="high"
+                className="object-cover object-[center_60%]"
+              />
+            </div>
             <div className="absolute -bottom-6 right-4 flex items-center gap-3 rounded-xl bg-white p-4 shadow-lg sm:right-6">
               <span className="grid size-11 place-items-center rounded-full bg-gold-100 text-gold-600">
                 <AwardIcon />
