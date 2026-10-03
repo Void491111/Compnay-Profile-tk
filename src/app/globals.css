@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-dm-serif), ui-serif, Georgia, serif;
+
+  --color-ink: #1c2433;
+  --color-muted: #5a6273;
+  --color-line: #e6e1d8;
+  --color-cream: #faf7f2;
+
+  --color-navy-50: #eef2f9;
+  --color-navy-100: #dbe3f1;
+  --color-navy-500: #2c4a86;
+  --color-navy-600: #1f3a70;
+  --color-navy-700: #172d58;
+  --color-navy-900: #0f2147;
+
+  /* gold-400: isian tombol (teks navy di atasnya). gold-500: judul besar
+     (kontras ≥ 3:1). gold-600: teks kecil di latar putih (kontras ≥ 4.5:1). */
+  --color-gold-100: #fdf3dc;
+  --color-gold-400: #f0b429;
+  --color-gold-500: #c0841a;
+  --color-gold-600: #95660c;
+}
+
+body {
+  background: white;
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-gold-400);
+  outline-offset: 2px;
+}
