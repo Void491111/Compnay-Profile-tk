@@ -1,12 +1,13 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import schoolPhoto from "../../public/international.jpg";
+import classroomPhoto from "../../public/1.jpg";
+import heroPhoto from "../../public/2.jpg";
+import classPhoto from "../../public/3.jpg";
 import { AnnouncementList, HighlightBar, ProgramTile } from "@/components/sections/cards";
 import { AwardIcon, CalendarIcon, ChatIcon, CheckIcon, UsersIcon } from "@/components/ui/icons";
 import {
   ButtonLink,
   Container,
-  PhotoPlaceholder,
   PpdbStatusBadge,
   ProgressBar,
   SectionHeading,
@@ -70,14 +71,14 @@ export default async function HomePage() {
           <div className="relative">
             <div className="relative aspect-[5/4] overflow-hidden rounded-2xl bg-navy-100 shadow-lg">
               <Image
-                src={schoolPhoto}
-                alt="Murid berjalan menuju gedung sekolah di sore hari, dengan bus sekolah kuning terparkir di samping"
+                src={heroPhoto}
+                alt="Guru mendampingi anak-anak yang tertawa sambil membaca buku bergambar di meja kelas"
                 fill
                 sizes="(min-width: 1152px) 540px, (min-width: 1024px) 47vw, 100vw"
                 placeholder="blur"
                 loading="eager"
                 fetchPriority="high"
-                className="object-cover object-[center_60%]"
+                className="object-cover"
               />
             </div>
             <div className="absolute -bottom-6 right-4 flex items-center gap-3 rounded-xl bg-white p-4 shadow-lg sm:right-6">
@@ -117,10 +118,16 @@ export default async function HomePage() {
             </dl>
           </div>
 
-          <PhotoPlaceholder
-            alt="Gedung sekolah dengan halaman bermain yang luas dan pepohonan"
-            className="aspect-[4/3] rounded-xl"
-          />
+          <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-navy-100 shadow-sm">
+            <Image
+              src={classroomPhoto}
+              alt="Ruang kelas berwarna-warni dengan karpet huruf, meja kelompok, dan hiasan karya anak di dinding"
+              fill
+              sizes="(min-width: 1152px) 400px, (min-width: 1024px) 35vw, 100vw"
+              placeholder="blur"
+              className="object-cover"
+            />
+          </div>
 
           <dl className="grid gap-4">
             {[
@@ -185,10 +192,16 @@ export default async function HomePage() {
       <section aria-labelledby="judul-ppdb" className="py-10">
         <Container>
           <div className="grid overflow-hidden rounded-xl border border-line lg:grid-cols-2">
-            <PhotoPlaceholder
-              alt="Anak-anak membaca buku cerita bersama di halaman sekolah"
-              className="min-h-64 lg:min-h-full"
-            />
+            <div className="relative min-h-64 bg-navy-100 sm:min-h-80 lg:min-h-full">
+              <Image
+                src={classPhoto}
+                alt="Foto bersama satu kelas: anak-anak berseragam biru tersenyum bersama para guru"
+                fill
+                sizes="(min-width: 1152px) 552px, (min-width: 1024px) 50vw, 100vw"
+                placeholder="blur"
+                className="object-cover"
+              />
+            </div>
             <div className="bg-cream p-8 sm:p-12">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-600">PPDB {ppdb.academicYear}</p>
               <h2 id="judul-ppdb" className="mt-2 font-serif text-3xl leading-tight text-navy-900 sm:text-4xl">
