@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 
 function ContactItem({ icon, label, children }: { icon: ReactNode; label: string; children: ReactNode }) {
   return (
-    <li className="flex gap-4 rounded-lg border border-line bg-white p-5 shadow-sm">
-      <span className="grid size-12 shrink-0 place-items-center rounded-full bg-navy-900 text-gold-400">{icon}</span>
-      <div>
+    <li className="flex gap-3 rounded-lg border border-line bg-white p-5 shadow-sm">
+      <span className="grid size-10 shrink-0 place-items-center rounded-full bg-navy-900 text-gold-400">{icon}</span>
+      <div className="min-w-0">
         <h2 className="text-sm font-bold text-muted">{label}</h2>
         <div className="mt-0.5 font-semibold">{children}</div>
       </div>
@@ -50,7 +50,7 @@ export default function ContactPage() {
             </a>
           </ContactItem>
           <ContactItem icon={<MailIcon />} label="Email">
-            <a href={`mailto:${contact.email}`} className="break-all hover:text-navy-700">
+            <a href={`mailto:${contact.email}`} className="[overflow-wrap:anywhere] hover:text-navy-700">
               {contact.email}
             </a>
           </ContactItem>
