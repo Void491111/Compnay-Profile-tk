@@ -10,16 +10,21 @@ const PHOTO_ZOOM = "transition-transform duration-500 ease-out motion-safe:group
 
 export function HighlightBar({ highlights }: { highlights: readonly Highlight[] }) {
   return (
-    <ul className="grid gap-px overflow-hidden rounded-xl bg-navy-700 shadow-xl sm:grid-cols-2 lg:grid-cols-5">
+    <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-xl bg-navy-700 shadow-xl sm:grid-cols-2 lg:grid-cols-5">
       {highlights.map((highlight) => (
-        <li key={highlight.id} className="group flex gap-3 bg-navy-900 p-5 text-white">
-          <span className="grid size-10 shrink-0 place-items-center rounded-full border border-gold-400/60 text-gold-400 transition-colors duration-300 group-hover:bg-gold-400 group-hover:text-navy-900">
-            <HighlightIcon name={highlight.icon} />
+        <li
+          key={highlight.id}
+          className="group flex min-w-0 flex-col items-center gap-5 bg-navy-900 px-6 py-8 text-white sm:last:col-span-2 lg:last:col-span-1"
+        >
+          <span className="grid size-16 shrink-0 place-items-center rounded-full border border-gold-400/70 text-gold-400 transition-colors duration-300 group-hover:bg-gold-400 group-hover:text-navy-900">
+            <HighlightIcon name={highlight.icon} className="size-7" />
           </span>
-          <div className="min-w-0">
-            <h3 className="text-sm font-semibold">{highlight.title}</h3>
-            <p className="mt-1 text-xs leading-relaxed text-white/70">{highlight.description}</p>
-          </div>
+          <h3 className="line-clamp-2 w-full max-w-60 text-center lg:min-h-[2lh] text-base font-semibold leading-snug">
+            {highlight.title}
+          </h3>
+          <p className="w-full max-w-60 text-center text-sm leading-relaxed text-white/70">
+            {highlight.description}
+          </p>
         </li>
       ))}
     </ul>
