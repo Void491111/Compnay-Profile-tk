@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { FacilityGrid } from "@/components/sections/cards";
-import { Container, PageHeader, SectionHeading } from "@/components/ui/primitives";
+import { FacilityList } from "@/components/sections/cards";
+import { Reveal } from "@/components/ui/motion";
+import { Container, PageHeader, Section, SectionHeading } from "@/components/ui/primitives";
 import { siteConfig } from "@/config/site";
 import { getFacilities, getSchoolProfile } from "@/services/school";
 
@@ -20,53 +21,66 @@ export default async function AboutPage() {
         description={`Mengenal ${siteConfig.name} lebih dekat: sejak ${profile.foundedYear}, terakreditasi ${profile.accreditation}.`}
       />
 
-      <Container className="grid gap-10 py-14 md:grid-cols-[1fr_1.4fr]">
-        <figure className="rounded-xl bg-gold-100 p-8">
-          <blockquote className="font-heading text-2xl font-medium leading-snug text-navy-900">“{profile.headmaster.greeting}”</blockquote>
-          <figcaption className="mt-6">
-            <span className="block font-bold text-navy-900">{profile.headmaster.name}</span>
-            <span className="text-muted">{profile.headmaster.title}</span>
-          </figcaption>
-        </figure>
+      <Section id="judul-sambutan">
+        <Container className="grid gap-12 lg:grid-cols-[2fr_3fr] lg:gap-16">
+          <Reveal>
+            <SectionHeading id="judul-sambutan" eyebrow="Sambutan" title="Dari kepala sekolah" />
+          </Reveal>
+          <Reveal delay={0.1}>
+            <figure className="border-l-2 border-gold-400 pl-6 sm:pl-8">
+              <blockquote className="font-heading text-2xl font-medium leading-snug text-navy-900">
+                “{profile.headmaster.greeting}”
+              </blockquote>
+              <figcaption className="mt-6">
+                <span className="block font-semibold text-navy-900">{profile.headmaster.name}</span>
+                <span className="text-sm text-muted">{profile.headmaster.title}</span>
+              </figcaption>
+            </figure>
+          </Reveal>
+        </Container>
+      </Section>
 
-        <div className="space-y-10">
-          <section aria-labelledby="judul-sejarah">
-            <SectionHeading id="judul-sejarah" eyebrow="Sejarah" title="Tumbuh bersama warga sekitar" />
-            <p className="mt-4 leading-relaxed text-muted">{profile.history}</p>
-          </section>
+      <Section label="Sejarah dan visi" tone="cream">
+        <Container className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+          <Reveal>
+            <SectionHeading eyebrow="Sejarah" title="Tumbuh bersama warga sekitar" />
+            <p className="mt-4 text-lg leading-relaxed text-muted">{profile.history}</p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <SectionHeading eyebrow="Visi" title="Ke mana kami melangkah" />
+            <p className="mt-4 text-lg font-medium leading-relaxed text-navy-900">{profile.vision}</p>
+          </Reveal>
+        </Container>
+      </Section>
 
-          <section aria-labelledby="judul-visi">
-            <SectionHeading id="judul-visi" eyebrow="Visi" title="Ke mana kami melangkah" />
-            <p className="mt-4 text-lg font-semibold leading-relaxed">{profile.vision}</p>
-          </section>
-
-          <section aria-labelledby="judul-misi">
+      <Section id="judul-misi">
+        <Container className="grid gap-12 lg:grid-cols-[2fr_3fr] lg:gap-16">
+          <Reveal>
             <SectionHeading id="judul-misi" eyebrow="Misi" title="Cara kami mewujudkannya" />
-            <ol className="mt-4 space-y-3">
-              {profile.missions.map((mission, index) => (
-                <li key={mission} className="flex gap-4">
-                  <span
-                    aria-hidden="true"
-                    className="grid size-8 shrink-0 place-items-center rounded-full bg-navy-900 font-bold text-gold-400"
-                  >
-                    {index + 1}
-                  </span>
-                  <span className="pt-1 text-muted">{mission}</span>
-                </li>
-              ))}
-            </ol>
-          </section>
-        </div>
-      </Container>
+          </Reveal>
+          <ol className="divide-y divide-line border-y border-line">
+            {profile.missions.map((mission, index) => (
+              <Reveal as="li" key={mission} delay={index * 0.05} className="flex gap-6 py-5">
+                <span aria-hidden="true" className="w-6 shrink-0 font-heading font-bold tabular-nums text-gold-600">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="leading-relaxed text-ink">{mission}</span>
+              </Reveal>
+            ))}
+          </ol>
+        </Container>
+      </Section>
 
-      <section aria-labelledby="judul-fasilitas" className="pb-6">
+      <Section id="judul-fasilitas" tone="cream">
         <Container>
-          <SectionHeading id="judul-fasilitas" eyebrow="Fasilitas" title="Sarana belajar dan bermain" />
-          <div className="mt-8">
-            <FacilityGrid facilities={facilities} />
+          <Reveal>
+            <SectionHeading id="judul-fasilitas" eyebrow="Fasilitas" title="Sarana belajar dan bermain" />
+          </Reveal>
+          <div className="mt-12">
+            <FacilityList facilities={facilities} />
           </div>
         </Container>
-      </section>
+      </Section>
     </>
   );
 }

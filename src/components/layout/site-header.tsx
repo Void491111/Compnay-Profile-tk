@@ -52,7 +52,7 @@ export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 shadow-sm">
+    <header className="sticky top-0 z-40 border-b border-line">
       <TopBar />
 
       <div className="bg-white">
@@ -68,10 +68,10 @@ export function SiteHeader() {
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
-                      className={`border-b-2 py-2 text-xs font-bold uppercase tracking-wider transition-colors ${
+                      className={`border-b-2 py-2 text-sm font-medium transition-colors duration-200 ${
                         active
                           ? "border-gold-400 text-navy-900"
-                          : "border-transparent text-ink/80 hover:text-navy-900"
+                          : "border-transparent text-muted hover:text-navy-900"
                       }`}
                     >
                       {item.label}
@@ -90,7 +90,7 @@ export function SiteHeader() {
             </div>
             <button
               type="button"
-              className="rounded-md border border-line px-4 py-2 text-xs font-bold uppercase tracking-wider xl:hidden"
+              className="inline-flex min-h-11 items-center rounded-lg border border-line px-4 text-sm font-semibold text-navy-900 xl:hidden"
               aria-expanded={menuOpen}
               aria-controls="menu-seluler"
               onClick={() => setMenuOpen((open) => !open)}
@@ -111,8 +111,8 @@ export function SiteHeader() {
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       onClick={() => setMenuOpen(false)}
-                      className={`block border-l-4 px-3 py-2.5 font-bold ${
-                        active ? "border-gold-400 bg-navy-50 text-navy-900" : "border-transparent hover:bg-navy-50"
+                      className={`flex min-h-11 items-center border-l-2 px-3 font-medium ${
+                        active ? "border-gold-400 bg-cream text-navy-900" : "border-transparent text-muted hover:bg-cream hover:text-navy-900"
                       }`}
                     >
                       {item.label}

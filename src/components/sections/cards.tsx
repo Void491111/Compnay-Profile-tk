@@ -5,10 +5,6 @@ import { PhotoPlaceholder } from "@/components/ui/primitives";
 import { formatIsoDate } from "@/lib/format";
 import type { Announcement, Facility, GalleryCategory, GalleryItem, Highlight, Program } from "@/types";
 
-const CARD_HOVER =
-  "transition duration-300 ease-out hover:shadow-lg motion-safe:hover:-translate-y-1";
-const PHOTO_ZOOM = "transition-transform duration-500 ease-out motion-safe:group-hover:scale-105";
-
 export function HighlightStrip({ highlights }: { highlights: readonly Highlight[] }) {
   return (
     <ul className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
@@ -43,46 +39,37 @@ export function ProgramList({ programs }: { programs: readonly Program[] }) {
   );
 }
 
-export function ProgramCard({ program }: { program: Program }) {
+export function ProgramDetail({ program }: { program: Program }) {
   return (
-    <article
-      className={`group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white shadow-sm ${CARD_HOVER}`}
-    >
-      <div className="relative overflow-hidden">
-        <PhotoPlaceholder alt={`Kegiatan kelas ${program.name}`} className={`aspect-[16/10] ${PHOTO_ZOOM}`} />
-        <span className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-navy-900 shadow-sm">
-          Usia {program.ageRange}
-        </span>
+    <article aria-labelledby={`program-${program.id}`} className="grid gap-6 lg:grid-cols-[2fr_3fr] lg:gap-16">
+      <div>
+        <p className="text-sm font-semibold text-gold-600">Usia {program.ageRange}</p>
+        <h2 id={`program-${program.id}`} className="mt-3 font-heading text-3xl font-bold tracking-tight text-navy-900">
+          {program.name}
+        </h2>
       </div>
 
-      <div className="flex flex-1 flex-col p-6">
-        <h3 className="line-clamp-1 font-heading text-2xl font-bold text-navy-900">{program.name}</h3>
-        <p className="mt-2 line-clamp-2 min-h-10 text-sm text-muted">{program.description}</p>
+      <div>
+        <p className="text-lg leading-relaxed text-ink">{program.description}</p>
+        <p className="mt-4 text-muted">
+          <span className="sr-only">Fokus kegiatan: </span>
+          {program.highlights.join(" · ")}
+        </p>
 
-        <ul className="mb-5 mt-4 flex flex-wrap gap-2" aria-label="Fokus kegiatan">
-          {program.highlights.slice(0, 3).map((highlight) => (
-            <li key={highlight} className="rounded-full bg-navy-50 px-3 py-1 text-xs font-medium text-navy-700">
-              {highlight}
-            </li>
-          ))}
-        </ul>
-
-        <dl className="mt-auto space-y-2 border-t border-line pt-4 text-sm">
-          <div className="flex items-center gap-2.5">
-            <dt>
-              <ClockIcon className="size-4 text-gold-500" />
-              <span className="sr-only">Jadwal</span>
-            </dt>
-            <dd className="truncate text-ink" title={program.schedule}>
-              {program.schedule}
-            </dd>
+        <dl className="mt-8 grid gap-6 border-t border-line pt-6 sm:grid-cols-2">
+          <div className="flex gap-3">
+            <ClockIcon className="mt-0.5 size-5 shrink-0 text-gold-500" />
+            <div>
+              <dt className="text-sm text-muted">Jadwal</dt>
+              <dd className="mt-1 font-medium text-navy-900">{program.schedule}</dd>
+            </div>
           </div>
-          <div className="flex items-center gap-2.5">
-            <dt>
-              <UsersIcon className="size-4 text-gold-500" />
-              <span className="sr-only">Kapasitas</span>
-            </dt>
-            <dd className="text-ink">Maks. {program.capacity} anak per kelas</dd>
+          <div className="flex gap-3">
+            <UsersIcon className="mt-0.5 size-5 shrink-0 text-gold-500" />
+            <div>
+              <dt className="text-sm text-muted">Kapasitas</dt>
+              <dd className="mt-1 font-medium text-navy-900">Maks. {program.capacity} anak per kelas</dd>
+            </div>
           </div>
         </dl>
       </div>
@@ -90,22 +77,17 @@ export function ProgramCard({ program }: { program: Program }) {
   );
 }
 
-export function FacilityGrid({ facilities }: { facilities: readonly Facility[] }) {
+export function FacilityList({ facilities }: { facilities: readonly Facility[] }) {
   return (
-    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {facilities.map((facility) => (
-        <li
-          key={facility.id}
-          className={`group flex h-full gap-4 rounded-xl border border-line bg-white p-5 shadow-sm ${CARD_HOVER}`}
-        >
-          <span className="grid size-12 shrink-0 place-items-center rounded-full bg-navy-900 text-gold-400 transition-colors duration-300 group-hover:bg-gold-400 group-hover:text-navy-900">
-            <FacilityIcon name={facility.icon} />
-          </span>
+    <ul className="grid gap-x-16 border-b border-line sm:grid-cols-2">
+      {facilities.map((facility, index) => (
+        <Reveal as="li" key={facility.id} delay={(index % 2) * 0.05} className="flex gap-4 border-t border-line py-6">
+          <FacilityIcon name={facility.icon} className="size-6 shrink-0 text-gold-500" />
           <div className="min-w-0">
-            <h3 className="line-clamp-1 font-semibold text-navy-900">{facility.name}</h3>
-            <p className="mt-1 line-clamp-2 text-sm text-muted">{facility.description}</p>
+            <h3 className="font-heading text-lg font-bold text-navy-900">{facility.name}</h3>
+            <p className="mt-1 leading-relaxed text-muted">{facility.description}</p>
           </div>
-        </li>
+        </Reveal>
       ))}
     </ul>
   );
@@ -139,25 +121,22 @@ export const GALLERY_CATEGORY_LABELS: Record<GalleryCategory, string> = {
 
 export function GalleryGrid({ items }: { items: readonly GalleryItem[] }) {
   return (
-    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {items.map((item) => (
-        <li key={item.id}>
-          <figure
-            className={`group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white shadow-sm ${CARD_HOVER}`}
-          >
-            <div className="overflow-hidden">
-              <PhotoPlaceholder alt={item.alt} className={`aspect-[4/3] ${PHOTO_ZOOM}`} />
+    <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+      {items.map((item, index) => (
+        <Reveal as="li" key={item.id} delay={(index % 3) * 0.05}>
+          <figure className="group">
+            <div className="overflow-hidden rounded-2xl">
+              <PhotoPlaceholder
+                alt={item.alt}
+                className="aspect-4/3 transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.03]"
+              />
             </div>
-            <figcaption className="flex h-20 items-center gap-3 px-4">
-              <span className="line-clamp-2 min-w-0 flex-1 text-sm font-semibold text-navy-900" title={item.title}>
-                {item.title}
-              </span>
-              <span className="shrink-0 rounded-full bg-navy-50 px-2.5 py-0.5 text-xs font-medium text-navy-700">
-                {GALLERY_CATEGORY_LABELS[item.category]}
-              </span>
+            <figcaption className="mt-4">
+              <span className="block font-medium text-navy-900">{item.title}</span>
+              <span className="mt-1 block text-sm text-muted">{GALLERY_CATEGORY_LABELS[item.category]}</span>
             </figcaption>
           </figure>
-        </li>
+        </Reveal>
       ))}
     </ul>
   );

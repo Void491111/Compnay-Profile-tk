@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { connection } from "next/server";
 import { ReportBrowser, type YearReport } from "@/components/sections/report-browser";
-import { Container, PageHeader } from "@/components/ui/primitives";
+import { Container, PageHeader, Section } from "@/components/ui/primitives";
 import { getPpdbInfo, getPublishedReports, getReportAcademicYears, summarizeReports } from "@/services/ppdb";
 
 export const metadata: Metadata = {
@@ -29,9 +29,11 @@ export default async function ReportPage() {
         description="Transparansi penerimaan murid baru, diperbarui setiap awal bulan. Laporan hanya memuat angka agregat, tanpa data pribadi anak."
       />
 
-      <Container className="py-14">
-        <ReportBrowser years={years} defaultYear={ppdb.academicYear} data={Object.fromEntries(entries)} />
-      </Container>
+      <Section label="Laporan penerimaan">
+        <Container>
+          <ReportBrowser years={years} defaultYear={ppdb.academicYear} data={Object.fromEntries(entries)} />
+        </Container>
+      </Section>
     </>
   );
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { connection } from "next/server";
 import { GalleryBrowser } from "@/components/sections/gallery-browser";
-import { Container, PageHeader } from "@/components/ui/primitives";
+import { Container, PageHeader, Section } from "@/components/ui/primitives";
 import { getGalleryItems } from "@/services/school";
 
 export const metadata: Metadata = {
@@ -17,9 +17,11 @@ export default async function GalleryPage() {
     <>
       <PageHeader eyebrow="Galeri" title="Keseharian di sekolah" description="Sekilas kegiatan, fasilitas, dan prestasi anak-anak." />
 
-      <Container className="py-14">
-        <GalleryBrowser items={items} />
-      </Container>
+      <Section label="Foto sekolah">
+        <Container>
+          <GalleryBrowser items={items} />
+        </Container>
+      </Section>
     </>
   );
 }

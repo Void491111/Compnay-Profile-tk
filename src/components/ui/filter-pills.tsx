@@ -36,8 +36,8 @@ export function FilterPills({
                 href={option.href}
                 onClick={(event) => handleClick(event, option.href)}
                 aria-current={active ? "page" : undefined}
-                className={`inline-block rounded-full px-4 py-2 font-bold transition-colors ${
-                  active ? "bg-navy-900 text-white" : "border border-line bg-white hover:bg-navy-50"
+                className={`inline-flex min-h-11 items-center rounded-full px-5 text-sm font-semibold transition-colors duration-200 ${
+                  active ? "bg-navy-900 text-white" : "border border-line text-navy-900 hover:border-navy-900/40"
                 }`}
               >
                 {option.label}

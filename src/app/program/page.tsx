@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { ProgramCard } from "@/components/sections/cards";
-import { ButtonLink, Container, PageHeader } from "@/components/ui/primitives";
+import { ProgramDetail } from "@/components/sections/cards";
+import { Reveal } from "@/components/ui/motion";
+import { ButtonLink, Container, PageHeader, Section, SectionHeading } from "@/components/ui/primitives";
 import { getPrograms } from "@/services/school";
 
 export const metadata: Metadata = {
@@ -19,23 +20,32 @@ export default async function ProgramPage() {
         description="Setiap kelompok dirancang sesuai tahap perkembangan anak, dengan rasio guru dan murid yang kecil."
       />
 
-      <Container className="py-14">
-        <div className="grid gap-6 md:grid-cols-3">
-          {programs.map((program) => (
-            <ProgramCard key={program.id} program={program} />
-          ))}
-        </div>
-
-        <div className="mt-12 flex flex-col items-start gap-4 rounded-xl bg-navy-50 p-8 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="font-heading text-2xl font-bold tracking-tight text-navy-900">Bingung memilih kelompok yang tepat?</h2>
-            <p className="mt-1 text-muted">Usia anak per 1 Juli tahun ajaran baru menjadi acuan penempatan.</p>
+      <Section label="Daftar program">
+        <Container>
+          <div className="divide-y divide-line">
+            {programs.map((program) => (
+              <Reveal key={program.id} className="py-12 first:pt-0 last:pb-0">
+                <ProgramDetail program={program} />
+              </Reveal>
+            ))}
           </div>
-          <ButtonLink href="/ppdb" arrow>
+        </Container>
+      </Section>
+
+      <Section id="judul-bantuan" tone="cream">
+        <Container className="flex flex-col items-start gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <Reveal>
+            <SectionHeading
+              id="judul-bantuan"
+              title="Bingung memilih kelompok yang tepat?"
+              description="Usia anak per 1 Juli tahun ajaran baru menjadi acuan penempatan."
+            />
+          </Reveal>
+          <ButtonLink href="/ppdb" arrow className="shrink-0">
             Lihat syarat PPDB
           </ButtonLink>
-        </div>
-      </Container>
+        </Container>
+      </Section>
     </>
   );
 }

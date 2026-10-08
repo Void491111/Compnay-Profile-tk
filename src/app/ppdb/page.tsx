@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
 import { CheckIcon, ChatIcon } from "@/components/ui/icons";
-import { ButtonLink, Container, PageHeader, PpdbStatusBadge, SectionHeading } from "@/components/ui/primitives";
+import { Reveal } from "@/components/ui/motion";
+import {
+  Container,
+  PageHeader,
+  PpdbStatusBadge,
+  Section,
+  SectionHeading,
+  TextLink,
+  buttonClass,
+} from "@/components/ui/primitives";
 import { formatDateRange, formatFeePeriod, formatIsoDate, formatRupiah } from "@/lib/format";
 import { getPpdbInfo } from "@/services/ppdb";
 
@@ -25,115 +34,116 @@ export default async function PpdbPage() {
         description="Semua yang perlu Ayah dan Bunda ketahui sebelum mendaftar."
       />
 
-      <Container className="py-14">
-        <div className="flex flex-col gap-4 rounded-xl border border-line bg-white p-6 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <PpdbStatusBadge status={ppdb.status} />
-            <p className="mt-3 max-w-2xl">{ppdb.announcement}</p>
+      <Section label="Status, persyaratan, dan jadwal">
+        <Container>
+          <Reveal className="flex flex-col gap-6 border-b border-line pb-12 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
+            <div className="max-w-2xl">
+              <PpdbStatusBadge status={ppdb.status} />
+              <p className="mt-4 text-lg leading-relaxed text-ink">{ppdb.announcement}</p>
+            </div>
+            <p className="shrink-0 text-sm text-muted">
+              Diperbarui <time dateTime={ppdb.updatedAt}>{formatIsoDate(ppdb.updatedAt)}</time>
+            </p>
+          </Reveal>
+
+          <div className="mt-16 grid gap-16 lg:grid-cols-2">
+            <Reveal>
+              <SectionHeading id="judul-syarat" eyebrow="Persyaratan" title="Dokumen yang disiapkan" />
+              <ul className="mt-10 divide-y divide-line border-y border-line">
+                {ppdb.requirements.map((requirement) => (
+                  <li key={requirement.id} className="flex gap-4 py-4">
+                    <CheckIcon className="mt-0.5 size-5 shrink-0 text-gold-500" />
+                    <span>
+                      <span className="font-medium text-navy-900">{requirement.label}</span>
+                      {requirement.note ? <span className="mt-1 block text-sm text-muted">{requirement.note}</span> : null}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+
+            <Reveal delay={0.1}>
+              <SectionHeading id="judul-jadwal" eyebrow="Jadwal" title="Tahapan pendaftaran" />
+              <ol className="mt-10 border-l border-line pl-8">
+                {ppdb.schedule.map((item) => (
+                  <li key={item.id} className="relative pb-8 last:pb-0">
+                    <span
+                      aria-hidden="true"
+                      className="absolute -left-[37px] top-1.5 size-2.5 rounded-full bg-gold-400 ring-4 ring-white"
+                    />
+                    <p className="text-sm text-muted">{formatDateRange(item.startDate, item.endDate)}</p>
+                    <p className="mt-1 font-heading text-lg font-bold text-navy-900">{item.phase}</p>
+                    {item.description ? <p className="mt-1 leading-relaxed text-muted">{item.description}</p> : null}
+                  </li>
+                ))}
+              </ol>
+            </Reveal>
           </div>
-          <p className="shrink-0 text-sm text-muted">
-            Diperbarui <time dateTime={ppdb.updatedAt}>{formatIsoDate(ppdb.updatedAt)}</time>
-          </p>
-        </div>
+        </Container>
+      </Section>
 
-        <div className="mt-14 grid gap-14 lg:grid-cols-2">
-          <section aria-labelledby="judul-syarat">
-            <SectionHeading id="judul-syarat" eyebrow="Persyaratan" title="Dokumen yang disiapkan" />
-            <ul className="mt-6 space-y-3">
-              {ppdb.requirements.map((requirement) => (
-                <li key={requirement.id} className="flex gap-3 rounded-lg border border-line bg-white p-4">
-                  <CheckIcon className="mt-0.5 size-5 shrink-0 text-gold-500" />
-                  <span>
-                    <span className="font-semibold">{requirement.label}</span>
-                    {requirement.note ? <span className="block text-sm text-muted">{requirement.note}</span> : null}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section aria-labelledby="judul-jadwal">
-            <SectionHeading id="judul-jadwal" eyebrow="Jadwal" title="Tahapan pendaftaran" />
-            <ol className="mt-6 border-l-2 border-navy-100 pl-6">
-              {ppdb.schedule.map((item) => (
-                <li key={item.id} className="relative pb-6 last:pb-0">
-                  <span
-                    aria-hidden="true"
-                    className="absolute -left-[33px] top-1 size-4 rounded-full border-4 border-white bg-gold-400"
-                  />
-                  <p className="text-sm font-bold text-navy-700">{formatDateRange(item.startDate, item.endDate)}</p>
-                  <p className="font-bold text-navy-900">{item.phase}</p>
-                  {item.description ? <p className="text-sm text-muted">{item.description}</p> : null}
-                </li>
-              ))}
-            </ol>
-          </section>
-        </div>
-
-        <section aria-labelledby="judul-biaya" className="mt-14">
-          <SectionHeading
-            id="judul-biaya"
-            eyebrow="Biaya"
-            title="Rincian biaya pendidikan"
-            description="Tersedia keringanan bagi keluarga yang membutuhkan. Silakan bicarakan dengan panitia."
-          />
-          <div className="mt-6 overflow-x-auto rounded-lg border border-line bg-white">
+      <Section id="judul-biaya" tone="cream">
+        <Container>
+          <Reveal>
+            <SectionHeading
+              id="judul-biaya"
+              eyebrow="Biaya"
+              title="Rincian biaya pendidikan"
+              description="Tersedia keringanan bagi keluarga yang membutuhkan. Silakan bicarakan dengan panitia."
+            />
+          </Reveal>
+          <Reveal delay={0.1} className="mt-12 overflow-x-auto rounded-2xl border border-line bg-white">
             <table className="w-full min-w-[520px] text-left">
-              <thead className="bg-navy-50 text-sm text-muted">
+              <thead className="border-b border-line text-sm text-muted">
                 <tr>
-                  <th scope="col" className="px-5 py-3 font-bold">Komponen</th>
-                  <th scope="col" className="px-5 py-3 font-bold">Periode</th>
-                  <th scope="col" className="px-5 py-3 text-right font-bold">Nominal</th>
+                  <th scope="col" className="px-6 py-4 font-medium">Komponen</th>
+                  <th scope="col" className="px-6 py-4 font-medium">Periode</th>
+                  <th scope="col" className="px-6 py-4 text-right font-medium">Nominal</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
                 {ppdb.fees.map((fee) => (
                   <tr key={fee.id}>
-                    <th scope="row" className="px-5 py-4 font-semibold">
+                    <th scope="row" className="px-6 py-5 font-medium text-navy-900">
                       {fee.label}
-                      {fee.note ? <span className="block text-sm font-normal text-muted">{fee.note}</span> : null}
+                      {fee.note ? <span className="mt-1 block text-sm font-normal text-muted">{fee.note}</span> : null}
                     </th>
-                    <td className="px-5 py-4 text-muted">{formatFeePeriod(fee.period)}</td>
-                    <td className="px-5 py-4 text-right font-bold tabular-nums">{formatRupiah(fee.amount)}</td>
+                    <td className="px-6 py-5 text-muted">{formatFeePeriod(fee.period)}</td>
+                    <td className="px-6 py-5 text-right font-semibold tabular-nums text-navy-900">{formatRupiah(fee.amount)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-        </section>
+          </Reveal>
+        </Container>
+      </Section>
 
-        <section
-          aria-labelledby="judul-panitia"
-          className="mt-14 flex flex-col gap-6 rounded-xl bg-navy-900 p-8 text-white md:flex-row md:items-center md:justify-between"
-        >
-          <div>
-            <h2 id="judul-panitia" className="font-heading text-3xl font-bold tracking-tight">
-              Ada pertanyaan?
-            </h2>
-            <p className="mt-1 text-white/80">
+      <Section id="judul-panitia">
+        <Container className="flex flex-col items-start gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <Reveal>
+            <SectionHeading id="judul-panitia" eyebrow="Panitia PPDB" title="Ada pertanyaan?" />
+            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
               Hubungi {contact.name} di {contact.phone} atau{" "}
-              <a href={`mailto:${contact.email}`} className="font-bold underline underline-offset-4">
+              <a href={`mailto:${contact.email}`} className="font-medium text-navy-900 underline underline-offset-4">
                 {contact.email}
               </a>
               .
             </p>
-          </div>
-          <div className="flex flex-wrap gap-3">
+          </Reveal>
+          <div className="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-3">
             <a
               href={`https://wa.me/${contact.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md bg-gold-400 px-5 py-3 text-xs font-bold uppercase tracking-wider text-navy-900 hover:bg-gold-400/85"
+              className={buttonClass("gold")}
             >
-              <ChatIcon className="size-5" />
+              <ChatIcon className="size-4" />
               WhatsApp panitia
             </a>
-            <ButtonLink href="/laporan" variant="onDark">
-              Laporan PPDB
-            </ButtonLink>
+            <TextLink href="/laporan">Laporan PPDB</TextLink>
           </div>
-        </section>
-      </Container>
+        </Container>
+      </Section>
     </>
   );
 }

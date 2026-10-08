@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { ArrowRightIcon, CameraIcon } from "@/components/ui/icons";
+import { Reveal } from "@/components/ui/motion";
 import { siteConfig } from "@/config/site";
 import type { PpdbStatus } from "@/types";
 
@@ -45,13 +46,15 @@ export function Logo({ tone = "dark" }: { tone?: "dark" | "light" }) {
 
 export function PageHeader({ eyebrow, title, description }: { eyebrow?: string; title: string; description?: string }) {
   return (
-    <section className="bg-navy-900 text-white">
-      <Container className="py-14 sm:py-20">
-        {eyebrow ? (
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-400">{eyebrow}</p>
-        ) : null}
-        <h1 className="mt-2 max-w-3xl font-heading text-4xl font-bold tracking-tight sm:text-5xl">{title}</h1>
-        {description ? <p className="mt-4 max-w-2xl text-lg text-white/75">{description}</p> : null}
+    <section className="border-b border-line bg-cream">
+      <Container className="py-16 sm:py-20">
+        <Reveal>
+          {eyebrow ? <p className="text-sm font-semibold text-gold-600">{eyebrow}</p> : null}
+          <h1 className="mt-3 max-w-3xl font-heading text-4xl font-bold leading-[1.1] tracking-tight text-navy-900 sm:text-5xl">
+            {title}
+          </h1>
+          {description ? <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">{description}</p> : null}
+        </Reveal>
       </Container>
     </section>
   );
@@ -99,7 +102,7 @@ export function SectionHeading({
       {eyebrow ? (
         <p className="text-sm font-semibold text-gold-600">{eyebrow}</p>
       ) : null}
-      <h2 id={id} className="mt-3 font-heading text-3xl font-bold leading-tight tracking-tight text-navy-900 sm:text-4xl">
+      <h2 id={id} className={`${eyebrow ? "mt-3" : ""} font-heading text-3xl font-bold leading-tight tracking-tight text-navy-900 sm:text-4xl`}>
         {title}
       </h2>
       {description ? <p className="mt-4 text-lg leading-relaxed text-muted">{description}</p> : null}
@@ -114,15 +117,21 @@ const BUTTON_VARIANTS = {
   onDark: "border border-white/50 text-white hover:bg-white/10",
 } as const;
 
+type ButtonVariant = keyof typeof BUTTON_VARIANTS;
+
+export function buttonClass(variant: ButtonVariant = "primary", className = "") {
+  return `group inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 text-sm font-semibold transition-colors duration-200 ${BUTTON_VARIANTS[variant]} ${className}`;
+}
+
 type ButtonLinkProps = ComponentProps<typeof Link> & {
-  variant?: keyof typeof BUTTON_VARIANTS;
+  variant?: ButtonVariant;
   arrow?: boolean;
 };
 
 export function ButtonLink({ variant = "primary", arrow = false, className = "", children, ...props }: ButtonLinkProps) {
   return (
     <Link
-      className={`group inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 text-sm font-semibold transition-colors duration-200 ${BUTTON_VARIANTS[variant]} ${className}`}
+      className={buttonClass(variant, className)}
       {...props}
     >
       {children}
@@ -164,9 +173,9 @@ export function PpdbStatusBadge({ status }: { status: PpdbStatus }) {
 
 export function StatCard({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
-    <div className="rounded-lg border border-line bg-white p-5 shadow-sm">
-      <dt className="text-sm font-semibold text-muted">{label}</dt>
-      <dd className="mt-1 font-heading text-4xl font-bold tabular-nums text-navy-900">{value}</dd>
+    <div className="border-t border-line pt-6">
+      <dt className="text-sm text-muted">{label}</dt>
+      <dd className="mt-2 font-heading text-4xl font-bold tabular-nums text-navy-900">{value}</dd>
       {hint ? <dd className="mt-1 text-sm text-muted">{hint}</dd> : null}
     </div>
   );

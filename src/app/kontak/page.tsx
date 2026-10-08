@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { ChatIcon, ClockIcon, MailIcon, MapPinIcon, PhoneIcon } from "@/components/ui/icons";
-import { Container, PageHeader } from "@/components/ui/primitives";
+import { Reveal } from "@/components/ui/motion";
+import { Container, PageHeader, Section, buttonClass } from "@/components/ui/primitives";
 import { mapsUrl, siteConfig, whatsappUrl } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -11,13 +12,13 @@ export const metadata: Metadata = {
 
 function ContactItem({ icon, label, children }: { icon: ReactNode; label: string; children: ReactNode }) {
   return (
-    <li className="flex gap-3 rounded-lg border border-line bg-white p-5 shadow-sm">
-      <span className="grid size-10 shrink-0 place-items-center rounded-full bg-navy-900 text-gold-400">{icon}</span>
+    <div className="flex gap-4 py-6">
+      <span className="shrink-0 text-gold-500">{icon}</span>
       <div className="min-w-0">
-        <h2 className="text-sm font-bold text-muted">{label}</h2>
-        <div className="mt-0.5 font-semibold">{children}</div>
+        <dt className="text-sm text-muted">{label}</dt>
+        <dd className="mt-1 font-medium leading-relaxed text-navy-900">{children}</dd>
       </div>
-    </li>
+    </div>
   );
 }
 
@@ -28,50 +29,49 @@ export default function ContactPage() {
     <>
       <PageHeader eyebrow="Kontak" title="Kunjungi kami" description="Kami senang menerima kunjungan. Kabari kami dulu agar bisa disambut dengan baik." />
 
-      <Container className="grid gap-10 py-14 lg:grid-cols-[1.3fr_1fr]">
-        <ul className="grid gap-4 sm:grid-cols-2">
-          <ContactItem icon={<MapPinIcon />} label="Alamat">
-            {contact.address}
-            <a
-              href={mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-1 block text-sm font-bold text-navy-700 underline underline-offset-4"
-            >
-              Buka di Google Maps
-            </a>
-          </ContactItem>
-          <ContactItem icon={<ClockIcon />} label="Jam operasional">
-            {contact.operationalHours}
-          </ContactItem>
-          <ContactItem icon={<PhoneIcon />} label="Telepon">
-            <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="hover:text-navy-700">
-              {contact.phone}
-            </a>
-          </ContactItem>
-          <ContactItem icon={<MailIcon />} label="Email">
-            <a href={`mailto:${contact.email}`} className="[overflow-wrap:anywhere] hover:text-navy-700">
-              {contact.email}
-            </a>
-          </ContactItem>
-        </ul>
+      <Section label="Informasi kontak">
+        <Container className="grid gap-12 lg:grid-cols-[3fr_2fr] lg:gap-16">
+          <Reveal>
+            <dl className="divide-y divide-line border-y border-line">
+              <ContactItem icon={<MapPinIcon />} label="Alamat">
+                {contact.address}
+                <a
+                  href={mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1 flex min-h-11 w-fit items-center text-sm font-semibold text-navy-900 underline underline-offset-4"
+                >
+                  Buka di Google Maps
+                </a>
+              </ContactItem>
+              <ContactItem icon={<ClockIcon />} label="Jam operasional">
+                {contact.operationalHours}
+              </ContactItem>
+              <ContactItem icon={<PhoneIcon />} label="Telepon">
+                <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="underline-offset-4 hover:underline">
+                  {contact.phone}
+                </a>
+              </ContactItem>
+              <ContactItem icon={<MailIcon />} label="Email">
+                <a href={`mailto:${contact.email}`} className="[overflow-wrap:anywhere] underline-offset-4 hover:underline">
+                  {contact.email}
+                </a>
+              </ContactItem>
+            </dl>
+          </Reveal>
 
-        <aside className="self-start rounded-xl bg-navy-900 p-8 text-white">
-          <h2 className="font-heading text-3xl font-bold tracking-tight">Cara tercepat: WhatsApp</h2>
-          <p className="mt-2 text-white/80">
-            Untuk pertanyaan PPDB, jadwal kunjungan, atau trial class, tim kami membalas pada jam operasional.
-          </p>
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 inline-flex items-center gap-2 rounded-md bg-gold-400 px-5 py-3 text-xs font-bold uppercase tracking-wider text-navy-900 hover:bg-gold-400/85"
-          >
-            <ChatIcon className="size-5" />
-            Chat WhatsApp
-          </a>
-        </aside>
-      </Container>
+          <Reveal delay={0.1} className="self-start rounded-2xl bg-cream p-8 sm:p-10">
+            <h2 className="font-heading text-2xl font-bold tracking-tight text-navy-900">Cara tercepat: WhatsApp</h2>
+            <p className="mt-4 leading-relaxed text-muted">
+              Untuk pertanyaan PPDB, jadwal kunjungan, atau trial class, tim kami membalas pada jam operasional.
+            </p>
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className={buttonClass("gold", "mt-8")}>
+              <ChatIcon className="size-4" />
+              Chat WhatsApp
+            </a>
+          </Reveal>
+        </Container>
+      </Section>
     </>
   );
 }

@@ -27,7 +27,7 @@ export function GalleryBrowser({ items }: { items: readonly GalleryItem[] }) {
   return (
     <>
       <FilterPills label="Filter kategori galeri" options={OPTIONS} activeKey={category ?? ALL} />
-      <div className="mt-8 [overflow-anchor:none]">
+      <div className="mt-12 [overflow-anchor:none]">
         {visible.length > 0 ? (
           <GalleryGrid items={visible} />
         ) : (
