@@ -40,7 +40,7 @@ export default async function HomePage() {
   const aboutStats = [
     { value: `${stats.yearsRunning}+`, label: "Tahun berdiri" },
     { value: formatNumber(stats.studentCount), label: "Murid aktif" },
-    { value: `1:${stats.studentsPerTeacher}`, label: "Rasio guru dan murid" },
+    { value: `1:${stats.studentsPerTeacher}`, label: "Rasio guru : murid" },
   ];
 
   return (
@@ -106,11 +106,11 @@ export default async function HomePage() {
               title="Belajar dengan gembira, berkarakter sejak dini"
               description={profile.vision}
             />
-            <dl className="mt-10 grid grid-cols-3 gap-6 border-t border-line pt-8">
+            <dl className="mt-10 grid grid-cols-3 gap-4 border-t border-line pt-8 sm:gap-6">
               {aboutStats.map((item) => (
-                <div key={item.label} className="flex flex-col-reverse">
-                  <dt className="mt-1 text-sm text-muted">{item.label}</dt>
-                  <dd className="font-heading text-3xl font-bold tabular-nums text-navy-900">{item.value}</dd>
+                <div key={item.label} className="flex min-w-0 flex-col-reverse justify-end">
+                  <dt className="mt-2 text-xs leading-snug text-muted sm:text-sm">{item.label}</dt>
+                  <dd className="font-heading text-2xl font-bold leading-none tabular-nums text-navy-900 sm:text-3xl">{item.value}</dd>
                 </div>
               ))}
             </dl>
