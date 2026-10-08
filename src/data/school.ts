@@ -31,11 +31,11 @@ export const schoolProfile: SchoolProfile = {
 };
 
 export const highlights: readonly Highlight[] = [
-  { id: "h1", title: "Belajar lewat bermain", description: "Kurikulum Merdeka dengan pendekatan bermain bermakna.", icon: "puzzle" },
-  { id: "h2", title: "Guru hangat & terlatih", description: "Pendidik berlatar PAUD yang rutin mengikuti pelatihan.", icon: "teacher" },
-  { id: "h3", title: "Karakter sejak dini", description: "Pembiasaan santun, jujur, dan peduli setiap hari.", icon: "heart" },
-  { id: "h4", title: "Dekat dengan alam", description: "Berkebun dan bermain di halaman yang luas.", icon: "leaf" },
-  { id: "h5", title: "Aman & nyaman", description: "Lingkungan diawasi, bersih, dan ramah anak.", icon: "shield" },
+  { id: "h1", title: "Belajar lewat bermain", icon: "puzzle" },
+  { id: "h2", title: "Guru terlatih", icon: "teacher" },
+  { id: "h3", title: "Karakter sejak dini", icon: "heart" },
+  { id: "h4", title: "Dekat dengan alam", icon: "leaf" },
+  { id: "h5", title: "Aman & nyaman", icon: "shield" },
 ];
 
 export const programs: readonly Program[] = [

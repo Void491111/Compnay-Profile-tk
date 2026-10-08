@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ClockIcon, FacilityIcon, HighlightIcon, UsersIcon } from "@/components/ui/icons";
+import { ArrowRightIcon, ClockIcon, FacilityIcon, HighlightIcon, UsersIcon } from "@/components/ui/icons";
+import { Reveal } from "@/components/ui/motion";
 import { PhotoPlaceholder } from "@/components/ui/primitives";
 import { formatIsoDate } from "@/lib/format";
 import type { Announcement, Facility, GalleryCategory, GalleryItem, Highlight, Program } from "@/types";
@@ -8,44 +9,37 @@ const CARD_HOVER =
   "transition duration-300 ease-out hover:shadow-lg motion-safe:hover:-translate-y-1";
 const PHOTO_ZOOM = "transition-transform duration-500 ease-out motion-safe:group-hover:scale-105";
 
-export function HighlightBar({ highlights }: { highlights: readonly Highlight[] }) {
+export function HighlightStrip({ highlights }: { highlights: readonly Highlight[] }) {
   return (
-    <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-xl bg-navy-700 shadow-xl sm:grid-cols-2 lg:grid-cols-5">
-      {highlights.map((highlight) => (
-        <li
-          key={highlight.id}
-          className="group flex min-w-0 flex-col items-center gap-5 bg-navy-900 px-6 py-8 text-white sm:last:col-span-2 lg:last:col-span-1"
-        >
-          <span className="grid size-16 shrink-0 place-items-center rounded-full border border-gold-400/70 text-gold-400 transition-colors duration-300 group-hover:bg-gold-400 group-hover:text-navy-900">
-            <HighlightIcon name={highlight.icon} className="size-7" />
-          </span>
-          <h3 className="line-clamp-2 w-full max-w-60 text-center lg:min-h-[2lh] text-base font-semibold leading-snug">
-            {highlight.title}
-          </h3>
-          <p className="w-full max-w-60 text-center text-sm leading-relaxed text-white/70">
-            {highlight.description}
-          </p>
-        </li>
+    <ul className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
+      {highlights.map((highlight, index) => (
+        <Reveal as="li" key={highlight.id} delay={index * 0.05} className="flex items-center gap-3">
+          <HighlightIcon name={highlight.icon} className="size-6 shrink-0 text-gold-500" />
+          <span className="text-sm font-medium text-navy-900">{highlight.title}</span>
+        </Reveal>
       ))}
     </ul>
   );
 }
 
-export function ProgramTile({ program }: { program: Program }) {
+export function ProgramList({ programs }: { programs: readonly Program[] }) {
   return (
-    <Link
-      href="/program"
-      className={`group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white shadow-sm ${CARD_HOVER}`}
-    >
-      <div className="overflow-hidden">
-        <PhotoPlaceholder alt={`Kegiatan kelas ${program.name}`} className={`aspect-[4/3] ${PHOTO_ZOOM}`} />
-      </div>
-      <div className="flex flex-1 flex-col p-5">
-        <h3 className="line-clamp-1 font-semibold text-navy-900">{program.name}</h3>
-        <p className="mt-2 line-clamp-3 min-h-15 text-sm text-muted">{program.description}</p>
-        <p className="mt-auto pt-4 text-sm font-semibold text-gold-600">Usia {program.ageRange}</p>
-      </div>
-    </Link>
+    <ul className="divide-y divide-line border-y border-line">
+      {programs.map((program, index) => (
+        <Reveal as="li" key={program.id} delay={index * 0.05}>
+          <Link href="/program" className="group flex items-center gap-6 py-6 sm:py-8">
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <h3 className="font-heading text-xl font-bold text-navy-900">{program.name}</h3>
+                <span className="text-sm text-muted">Usia {program.ageRange}</span>
+              </div>
+              <p className="mt-2 leading-relaxed text-muted">{program.description}</p>
+            </div>
+            <ArrowRightIcon className="size-5 shrink-0 text-navy-900/30 transition duration-200 ease-out group-hover:translate-x-1 group-hover:text-navy-900" />
+          </Link>
+        </Reveal>
+      ))}
+    </ul>
   );
 }
 
@@ -62,7 +56,7 @@ export function ProgramCard({ program }: { program: Program }) {
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="line-clamp-1 font-serif text-2xl text-navy-900">{program.name}</h3>
+        <h3 className="line-clamp-1 font-heading text-2xl font-bold text-navy-900">{program.name}</h3>
         <p className="mt-2 line-clamp-2 min-h-10 text-sm text-muted">{program.description}</p>
 
         <ul className="mb-5 mt-4 flex flex-wrap gap-2" aria-label="Fokus kegiatan">
@@ -119,18 +113,19 @@ export function FacilityGrid({ facilities }: { facilities: readonly Facility[] }
 
 export function AnnouncementList({ announcements }: { announcements: readonly Announcement[] }) {
   return (
-    <ul className="grid gap-5 md:grid-cols-3">
-      {announcements.map((announcement) => (
-        <li
-          key={announcement.id}
-          className={`flex h-full flex-col rounded-xl border border-line bg-white p-6 shadow-sm ${CARD_HOVER}`}
-        >
-          <time dateTime={announcement.publishedAt} className="text-xs font-semibold uppercase tracking-wider text-gold-600">
-            {formatIsoDate(announcement.publishedAt)}
-          </time>
-          <h3 className="mt-2 line-clamp-2 min-h-14 font-serif text-xl text-navy-900">{announcement.title}</h3>
-          <p className="mt-2 line-clamp-3 text-sm text-muted">{announcement.excerpt}</p>
-        </li>
+    <ul className="divide-y divide-line border-y border-line">
+      {announcements.map((announcement, index) => (
+        <Reveal as="li" key={announcement.id} delay={index * 0.05}>
+          <article className="grid gap-2 py-6 sm:grid-cols-[10rem_1fr] sm:gap-8 sm:py-8">
+            <time dateTime={announcement.publishedAt} className="text-sm text-muted sm:pt-1">
+              {formatIsoDate(announcement.publishedAt)}
+            </time>
+            <div className="max-w-2xl">
+              <h3 className="font-heading text-lg font-bold text-navy-900">{announcement.title}</h3>
+              <p className="mt-2 leading-relaxed text-muted">{announcement.excerpt}</p>
+            </div>
+          </article>
+        </Reveal>
       ))}
     </ul>
   );

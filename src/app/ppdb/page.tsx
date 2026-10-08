@@ -107,7 +107,7 @@ export default async function PpdbPage() {
           className="mt-14 flex flex-col gap-6 rounded-xl bg-navy-900 p-8 text-white md:flex-row md:items-center md:justify-between"
         >
           <div>
-            <h2 id="judul-panitia" className="font-serif text-3xl">
+            <h2 id="judul-panitia" className="font-heading text-3xl font-bold tracking-tight">
               Ada pertanyaan?
             </h2>
             <p className="mt-1 text-white/80">

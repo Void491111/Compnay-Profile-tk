@@ -110,7 +110,6 @@ export type HighlightIcon = "heart" | "teacher" | "puzzle" | "leaf" | "shield";
 export interface Highlight {
   readonly id: string;
   readonly title: string;
-  readonly description: string;
   readonly icon: HighlightIcon;
 }
 

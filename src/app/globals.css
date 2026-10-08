@@ -2,7 +2,7 @@
 
 @theme {
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-dm-serif), ui-serif, Georgia, serif;
+  --font-heading: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
 
   --color-ink: #1c2433;
   --color-muted: #5a6273;
@@ -24,6 +24,12 @@
 body {
   background: white;
   color: var(--color-ink);
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
 }
 
 :focus-visible {

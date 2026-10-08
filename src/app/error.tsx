@@ -11,7 +11,7 @@ export default function ErrorPage({ error, retry }: { error: Error & { digest?: 
   return (
     <Container className="flex flex-col items-start gap-4 py-24">
       <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-600">Terjadi kendala</p>
-      <h1 className="font-serif text-4xl text-navy-900">Halaman gagal dimuat</h1>
+      <h1 className="font-heading text-4xl font-bold tracking-tight text-navy-900">Halaman gagal dimuat</h1>
       <p className="max-w-xl text-muted">
         Maaf, ada gangguan saat menampilkan halaman ini. Coba muat ulang, atau kembali ke beranda.
       </p>

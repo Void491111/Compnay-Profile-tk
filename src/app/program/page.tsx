@@ -28,7 +28,7 @@ export default async function ProgramPage() {
 
         <div className="mt-12 flex flex-col items-start gap-4 rounded-xl bg-navy-50 p-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="font-serif text-2xl text-navy-900">Bingung memilih kelompok yang tepat?</h2>
+            <h2 className="font-heading text-2xl font-bold tracking-tight text-navy-900">Bingung memilih kelompok yang tepat?</h2>
             <p className="mt-1 text-muted">Usia anak per 1 Juli tahun ajaran baru menjadi acuan penempatan.</p>
           </div>
           <ButtonLink href="/ppdb" arrow>

@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Serif_Display, Poppins } from "next/font/google";
+import { Poppins, Roboto } from "next/font/google";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { MotionProvider } from "@/components/ui/motion";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
@@ -11,10 +12,10 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
 });
 
-const dmSerif = DM_Serif_Display({
-  variable: "--font-dm-serif",
+const roboto = Roboto({
+  variable: "--font-roboto",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["500", "700"],
 });
 
 export const revalidate = 86400;
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="id" className={`${poppins.variable} ${dmSerif.variable} h-full antialiased`}>
+    <html lang="id" className={`${poppins.variable} ${roboto.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col font-sans">
         <a
           href="#konten"
@@ -49,7 +50,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <SiteHeader />
         <main id="konten" className="flex-1">
-          {children}
+          <MotionProvider>{children}</MotionProvider>
         </main>
         <SiteFooter />
       </body>

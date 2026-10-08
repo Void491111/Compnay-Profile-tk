@@ -57,7 +57,7 @@ export default function ContactPage() {
         </ul>
 
         <aside className="self-start rounded-xl bg-navy-900 p-8 text-white">
-          <h2 className="font-serif text-3xl">Cara tercepat: WhatsApp</h2>
+          <h2 className="font-heading text-3xl font-bold tracking-tight">Cara tercepat: WhatsApp</h2>
           <p className="mt-2 text-white/80">
             Untuk pertanyaan PPDB, jadwal kunjungan, atau trial class, tim kami membalas pada jam operasional.
           </p>

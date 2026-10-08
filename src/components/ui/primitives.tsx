@@ -18,7 +18,7 @@ function Emblem() {
           strokeWidth="2.5"
         />
       </svg>
-      <span className="relative font-serif text-lg text-gold-400">{siteConfig.initials}</span>
+      <span className="relative font-heading text-lg font-bold text-gold-400">{siteConfig.initials}</span>
     </span>
   );
 }
@@ -28,7 +28,7 @@ export function Logo({ tone = "dark" }: { tone?: "dark" | "light" }) {
     <Link href="/" className="flex items-center gap-3 rounded-md">
       <Emblem />
       <span className="whitespace-nowrap leading-tight">
-        <span className={`block font-serif text-lg uppercase sm:text-xl ${tone === "dark" ? "text-navy-900" : "text-white"}`}>
+        <span className={`block font-heading text-lg font-bold uppercase sm:text-xl ${tone === "dark" ? "text-navy-900" : "text-white"}`}>
           TK {siteConfig.shortName}
         </span>
         <span
@@ -50,9 +50,33 @@ export function PageHeader({ eyebrow, title, description }: { eyebrow?: string; 
         {eyebrow ? (
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-400">{eyebrow}</p>
         ) : null}
-        <h1 className="mt-2 max-w-3xl font-serif text-4xl sm:text-5xl">{title}</h1>
+        <h1 className="mt-2 max-w-3xl font-heading text-4xl font-bold tracking-tight sm:text-5xl">{title}</h1>
         {description ? <p className="mt-4 max-w-2xl text-lg text-white/75">{description}</p> : null}
       </Container>
+    </section>
+  );
+}
+
+export function Section({
+  id,
+  label,
+  tone = "white",
+  className = "",
+  children,
+}: {
+  id?: string;
+  label?: string;
+  tone?: "white" | "cream";
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <section
+      aria-labelledby={id}
+      aria-label={id ? undefined : label}
+      className={`py-20 sm:py-28 ${tone === "cream" ? "bg-cream" : ""} ${className}`}
+    >
+      {children}
     </section>
   );
 }
@@ -60,14 +84,12 @@ export function PageHeader({ eyebrow, title, description }: { eyebrow?: string; 
 export function SectionHeading({
   eyebrow,
   title,
-  accent,
   description,
   id,
   align = "left",
 }: {
   eyebrow?: string;
   title: string;
-  accent?: string;
   description?: string;
   id?: string;
   align?: "left" | "center";
@@ -75,20 +97,19 @@ export function SectionHeading({
   return (
     <div className={align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
       {eyebrow ? (
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-600">{eyebrow}</p>
+        <p className="text-sm font-semibold text-gold-600">{eyebrow}</p>
       ) : null}
-      <h2 id={id} className="mt-2 font-serif text-3xl leading-tight text-navy-900 sm:text-4xl">
+      <h2 id={id} className="mt-3 font-heading text-3xl font-bold leading-tight tracking-tight text-navy-900 sm:text-4xl">
         {title}
-        {accent ? <span className="block text-gold-500">{accent}</span> : null}
       </h2>
-      {description ? <p className="mt-3 text-muted">{description}</p> : null}
+      {description ? <p className="mt-4 text-lg leading-relaxed text-muted">{description}</p> : null}
     </div>
   );
 }
 
 const BUTTON_VARIANTS = {
   primary: "bg-navy-900 text-white hover:bg-navy-700",
-  outline: "border border-navy-900 text-navy-900 hover:bg-navy-50",
+  outline: "border border-navy-900/20 text-navy-900 hover:border-navy-900/40 hover:bg-navy-50",
   gold: "bg-gold-400 text-navy-900 hover:bg-gold-400/85",
   onDark: "border border-white/50 text-white hover:bg-white/10",
 } as const;
@@ -101,11 +122,25 @@ type ButtonLinkProps = ComponentProps<typeof Link> & {
 export function ButtonLink({ variant = "primary", arrow = false, className = "", children, ...props }: ButtonLinkProps) {
   return (
     <Link
-      className={`inline-flex items-center justify-center gap-2.5 rounded-md px-5 py-3 text-xs font-bold uppercase tracking-wider transition-colors ${BUTTON_VARIANTS[variant]} ${className}`}
+      className={`group inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 text-sm font-semibold transition-colors duration-200 ${BUTTON_VARIANTS[variant]} ${className}`}
       {...props}
     >
       {children}
-      {arrow ? <ArrowRightIcon className="size-4" /> : null}
+      {arrow ? (
+        <ArrowRightIcon className="size-4 transition-transform duration-200 ease-out group-hover:translate-x-0.5" />
+      ) : null}
+    </Link>
+  );
+}
+
+export function TextLink({ className = "", children, ...props }: ComponentProps<typeof Link>) {
+  return (
+    <Link
+      className={`group inline-flex min-h-12 items-center gap-2 text-sm font-semibold text-navy-900 underline-offset-4 hover:underline ${className}`}
+      {...props}
+    >
+      {children}
+      <ArrowRightIcon className="size-4 transition-transform duration-200 ease-out group-hover:translate-x-0.5" />
     </Link>
   );
 }
@@ -131,7 +166,7 @@ export function StatCard({ label, value, hint }: { label: string; value: string;
   return (
     <div className="rounded-lg border border-line bg-white p-5 shadow-sm">
       <dt className="text-sm font-semibold text-muted">{label}</dt>
-      <dd className="mt-1 font-serif text-4xl text-navy-900">{value}</dd>
+      <dd className="mt-1 font-heading text-4xl font-bold tabular-nums text-navy-900">{value}</dd>
       {hint ? <dd className="mt-1 text-sm text-muted">{hint}</dd> : null}
     </div>
   );
@@ -157,11 +192,9 @@ export function PhotoPlaceholder({ alt, className = "" }: { alt: string; classNa
     <div
       role="img"
       aria-label={alt}
-      className={`relative grid place-items-center overflow-hidden bg-linear-to-br from-navy-100 via-cream to-gold-100 ${className}`}
+      className={`relative grid place-items-center overflow-hidden bg-navy-50 ${className}`}
     >
-      <span aria-hidden="true" className="absolute -right-8 -top-8 size-32 rounded-full bg-gold-400/20" />
-      <span aria-hidden="true" className="absolute -bottom-10 -left-6 size-28 rounded-full bg-navy-500/10" />
-      <span aria-hidden="true" className="relative flex flex-col items-center gap-1.5 text-navy-500/60">
+      <span aria-hidden="true" className="flex flex-col items-center gap-1.5 text-navy-500/60">
         <CameraIcon className="size-8" />
         <span className="text-xs font-semibold">Foto menyusul</span>
       </span>

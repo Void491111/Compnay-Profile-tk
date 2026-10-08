@@ -22,7 +22,7 @@ export default async function AboutPage() {
 
       <Container className="grid gap-10 py-14 md:grid-cols-[1fr_1.4fr]">
         <figure className="rounded-xl bg-gold-100 p-8">
-          <blockquote className="font-serif text-2xl leading-snug text-navy-900">“{profile.headmaster.greeting}”</blockquote>
+          <blockquote className="font-heading text-2xl font-medium leading-snug text-navy-900">“{profile.headmaster.greeting}”</blockquote>
           <figcaption className="mt-6">
             <span className="block font-bold text-navy-900">{profile.headmaster.name}</span>
             <span className="text-muted">{profile.headmaster.title}</span>

@@ -1,19 +1,21 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
 import classroomPhoto from "../../public/1.jpg";
 import heroPhoto from "../../public/2.jpg";
 import classPhoto from "../../public/3.jpg";
-import { AnnouncementList, HighlightBar, ProgramTile } from "@/components/sections/cards";
-import { AwardIcon, CalendarIcon, ChatIcon, CheckIcon, UsersIcon } from "@/components/ui/icons";
+import { AnnouncementList, HighlightStrip, ProgramList } from "@/components/sections/cards";
+import { ChatIcon } from "@/components/ui/icons";
+import { Reveal } from "@/components/ui/motion";
 import {
   ButtonLink,
   Container,
   PpdbStatusBadge,
   ProgressBar,
+  Section,
   SectionHeading,
+  TextLink,
 } from "@/components/ui/primitives";
 import { siteConfig, whatsappUrl } from "@/config/site";
-import { formatNumber, formatPercent } from "@/lib/format";
+import { formatNumber } from "@/lib/format";
 import { getEnrollmentSummary, getPpdbInfo } from "@/services/ppdb";
 import {
   getHighlights,
@@ -22,18 +24,6 @@ import {
   getSchoolProfile,
   getSchoolStats,
 } from "@/services/school";
-
-function MiniStat({ icon, value, label }: { icon: ReactNode; value: string; label: string }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <span className="text-navy-500">{icon}</span>
-      <div className="flex flex-col-reverse">
-        <dt className="mt-1 text-xs text-muted">{label}</dt>
-        <dd className="font-serif text-2xl leading-none text-navy-900">{value}</dd>
-      </div>
-    </div>
-  );
-}
 
 export default async function HomePage() {
   const [profile, stats, highlights, programs, announcements, ppdb] = await Promise.all([
@@ -45,208 +35,168 @@ export default async function HomePage() {
     getPpdbInfo(),
   ]);
   const summary = await getEnrollmentSummary(ppdb.academicYear);
-  const [taglineLead, taglineAccent] = siteConfig.tagline.split(", ");
+  const [taglineLead, taglineRest] = siteConfig.tagline.split(", ");
+
+  const aboutStats = [
+    { value: `${stats.yearsRunning}+`, label: "Tahun berdiri" },
+    { value: formatNumber(stats.studentCount), label: "Murid aktif" },
+    { value: `1:${stats.studentsPerTeacher}`, label: "Rasio guru dan murid" },
+  ];
 
   return (
     <>
-      <section className="relative bg-cream">
-        <Container className="grid items-center gap-12 pb-28 pt-14 lg:grid-cols-[1.05fr_1fr] lg:pb-36 lg:pt-20">
-          <div>
-            <PpdbStatusBadge status={ppdb.status} />
-            <h1 className="mt-5 font-serif text-5xl leading-[1.05] text-navy-900 sm:text-6xl">
-              {taglineLead}
-              {taglineAccent ? <span className="block text-gold-500">{taglineAccent}.</span> : null}
-            </h1>
-            <p className="mt-6 max-w-lg text-lg text-muted">{siteConfig.description}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/tentang" arrow>
-                Kenali sekolah kami
-              </ButtonLink>
-              <ButtonLink href="/ppdb" variant="outline">
-                Info PPDB {ppdb.academicYear}
-              </ButtonLink>
-            </div>
-          </div>
+      <section className="bg-cream">
+        <Container className="pb-16 pt-16 sm:pb-20 lg:pt-24">
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+            <Reveal>
+              <PpdbStatusBadge status={ppdb.status} />
+              <h1 className="mt-6 font-heading text-4xl font-bold leading-[1.1] tracking-tight text-navy-900 sm:text-5xl lg:text-6xl">
+                {taglineLead}
+                {taglineRest ? <span className="block">{taglineRest}.</span> : null}
+              </h1>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{siteConfig.description}</p>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <ButtonLink href="/ppdb" arrow>
+                  Info PPDB {ppdb.academicYear}
+                </ButtonLink>
+                <ButtonLink href="/tentang" variant="outline">
+                  Kenali sekolah kami
+                </ButtonLink>
+              </div>
+            </Reveal>
 
-          <div className="relative">
-            <div className="relative aspect-[5/4] overflow-hidden rounded-2xl bg-navy-100 shadow-lg">
+            <div className="relative aspect-5/4 overflow-hidden rounded-2xl bg-navy-100">
               <Image
                 src={heroPhoto}
                 alt="Guru mendampingi anak-anak yang tertawa sambil membaca buku bergambar di meja kelas"
                 fill
-                sizes="(min-width: 1152px) 540px, (min-width: 1024px) 47vw, 100vw"
+                sizes="(min-width: 1152px) 520px, (min-width: 1024px) 46vw, 100vw"
                 placeholder="blur"
                 loading="eager"
                 fetchPriority="high"
                 className="object-cover"
               />
             </div>
-            <div className="absolute -bottom-6 right-4 flex items-center gap-3 rounded-xl bg-white p-4 shadow-lg sm:right-6">
-              <span className="grid size-11 place-items-center rounded-full bg-gold-100 text-gold-600">
-                <AwardIcon />
-              </span>
-              <div className="leading-tight">
-                <p className="text-xs text-muted">Mendampingi anak</p>
-                <p className="font-serif text-xl text-navy-900">sejak {profile.foundedYear}</p>
-              </div>
-            </div>
+          </div>
+
+          <div className="mt-16 border-t border-line pt-10 sm:mt-20">
+            <h2 className="sr-only">Keunggulan sekolah</h2>
+            <HighlightStrip highlights={highlights} />
           </div>
         </Container>
       </section>
 
-      <Container className="relative z-10 -mt-16 lg:-mt-20">
-        <HighlightBar highlights={highlights} />
-      </Container>
-
-      <section aria-labelledby="judul-tentang" className="py-20">
-        <Container className="grid items-center gap-10 lg:grid-cols-[1.1fr_1.2fr_0.8fr]">
-          <div>
-            <SectionHeading
-              id="judul-tentang"
-              eyebrow="Tentang sekolah kami"
-              title="Belajar dengan gembira,"
-              accent="berkarakter sejak dini"
-            />
-            <p className="mt-5 text-muted">{profile.vision}</p>
-            <ButtonLink href="/tentang" className="mt-6" arrow>
-              Selengkapnya
-            </ButtonLink>
-            <dl className="mt-8 grid grid-cols-3 gap-4">
-              <MiniStat icon={<CalendarIcon />} value={`${stats.yearsRunning}+`} label="Tahun berdiri" />
-              <MiniStat icon={<UsersIcon />} value={formatNumber(stats.studentCount)} label="Murid aktif" />
-              <MiniStat icon={<AwardIcon />} value={profile.accreditation.split(" ")[0]} label="Akreditasi" />
-            </dl>
-          </div>
-
-          <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-navy-100 shadow-sm">
+      <Section id="judul-tentang">
+        <Container className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <Reveal className="relative aspect-4/3 overflow-hidden rounded-2xl bg-navy-100">
             <Image
               src={classroomPhoto}
               alt="Ruang kelas berwarna-warni dengan karpet huruf, meja kelompok, dan hiasan karya anak di dinding"
               fill
-              sizes="(min-width: 1152px) 400px, (min-width: 1024px) 35vw, 100vw"
+              sizes="(min-width: 1152px) 520px, (min-width: 1024px) 46vw, 100vw"
               placeholder="blur"
               className="object-cover"
             />
-          </div>
+          </Reveal>
 
-          <dl className="grid gap-4">
-            {[
-              { value: `1:${stats.studentsPerTeacher}`, label: "Rasio guru dan murid" },
-              { value: `${programs.length}`, label: "Kelompok belajar" },
-              { value: `${stats.teacherCount}`, label: "Guru dan pendamping" },
-            ].map((item) => (
-              <div key={item.label} className="flex flex-col-reverse rounded-lg border border-line bg-white p-5 shadow-sm">
-                <dt className="mt-1 text-sm text-muted">{item.label}</dt>
-                <dd className="font-serif text-3xl text-navy-900">{item.value}</dd>
-              </div>
-            ))}
-          </dl>
+          <Reveal delay={0.1}>
+            <SectionHeading
+              id="judul-tentang"
+              eyebrow="Tentang kami"
+              title="Belajar dengan gembira, berkarakter sejak dini"
+              description={profile.vision}
+            />
+            <dl className="mt-10 grid grid-cols-3 gap-6 border-t border-line pt-8">
+              {aboutStats.map((item) => (
+                <div key={item.label} className="flex flex-col-reverse">
+                  <dt className="mt-1 text-sm text-muted">{item.label}</dt>
+                  <dd className="font-heading text-3xl font-bold tabular-nums text-navy-900">{item.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <TextLink href="/tentang" className="mt-8">
+              Selengkapnya tentang kami
+            </TextLink>
+          </Reveal>
         </Container>
-      </section>
+      </Section>
 
-      <section aria-labelledby="judul-program" className="bg-cream py-20">
-        <Container>
-          <SectionHeading
-            id="judul-program"
-            eyebrow="Program"
-            title="Temukan program yang tepat"
-            description="Setiap kelompok dirancang sesuai tahap tumbuh kembang anak."
-            align="center"
-          />
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {programs.map((program) => (
-              <ProgramTile key={program.id} program={program} />
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <ButtonLink href="/program" arrow>
-              Lihat semua program
-            </ButtonLink>
-          </div>
+      <Section id="judul-program" tone="cream">
+        <Container className="grid gap-12 lg:grid-cols-[2fr_3fr] lg:gap-16">
+          <Reveal>
+            <SectionHeading
+              id="judul-program"
+              eyebrow="Program"
+              title="Kelompok belajar sesuai usia"
+              description="Setiap kelompok dirancang sesuai tahap tumbuh kembang anak."
+            />
+            <TextLink href="/program" className="mt-8">
+              Lihat detail program
+            </TextLink>
+          </Reveal>
+          <ProgramList programs={programs} />
         </Container>
-      </section>
+      </Section>
 
-      <section aria-label="Sekolah dalam angka" className="py-10">
-        <Container>
-          <dl className="grid gap-px overflow-hidden rounded-xl bg-navy-700 shadow-lg sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { icon: <CalendarIcon />, value: `${stats.yearsRunning}+`, label: "Tahun pengalaman" },
-              { icon: <UsersIcon />, value: formatNumber(stats.studentCount), label: "Murid aktif" },
-              { icon: <AwardIcon />, value: `${stats.teacherCount}`, label: "Guru berpengalaman" },
-              { icon: <CheckIcon />, value: formatPercent(summary.quotaFilledPercent), label: "Kuota PPDB terisi" },
-            ].map((item) => (
-              <div key={item.label} className="group flex items-center gap-4 bg-navy-900 px-6 py-8">
-                <span className="grid size-12 shrink-0 place-items-center rounded-full border border-gold-400/40 text-gold-400 transition-colors duration-300 group-hover:bg-gold-400 group-hover:text-navy-900">
-                  {item.icon}
+      <Section id="judul-ppdb">
+        <Container className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <Reveal className="relative aspect-4/3 overflow-hidden rounded-2xl bg-navy-100 lg:order-last">
+            <Image
+              src={classPhoto}
+              alt="Foto bersama satu kelas: anak-anak berseragam biru tersenyum bersama para guru"
+              fill
+              sizes="(min-width: 1152px) 520px, (min-width: 1024px) 46vw, 100vw"
+              placeholder="blur"
+              className="object-cover"
+            />
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <SectionHeading
+              id="judul-ppdb"
+              eyebrow={`PPDB ${ppdb.academicYear}`}
+              title="Mulai petualangan si kecil bersama kami"
+              description={ppdb.announcement}
+            />
+
+            <div className="mt-10 max-w-sm">
+              <div className="mb-3 flex justify-between text-sm">
+                <span className="text-muted">Kuota terisi</span>
+                <span className="font-semibold tabular-nums text-navy-900">
+                  {formatNumber(summary.totalAccepted)} / {formatNumber(summary.quota)}
                 </span>
-                <div className="flex min-w-0 flex-col-reverse">
-                  <dt className="mt-2 truncate text-sm text-white/75">{item.label}</dt>
-                  <dd className="font-serif text-4xl leading-none text-gold-400">{item.value}</dd>
-                </div>
               </div>
-            ))}
-          </dl>
-        </Container>
-      </section>
-
-      <section aria-labelledby="judul-ppdb" className="py-10">
-        <Container>
-          <div className="grid overflow-hidden rounded-xl border border-line lg:grid-cols-2">
-            <div className="relative min-h-64 bg-navy-100 sm:min-h-80 lg:min-h-full">
-              <Image
-                src={classPhoto}
-                alt="Foto bersama satu kelas: anak-anak berseragam biru tersenyum bersama para guru"
-                fill
-                sizes="(min-width: 1152px) 552px, (min-width: 1024px) 50vw, 100vw"
-                placeholder="blur"
-                className="object-cover"
-              />
+              <ProgressBar value={summary.quotaFilledPercent} label="Persentase kuota terisi" />
             </div>
-            <div className="bg-cream p-8 sm:p-12">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-600">PPDB {ppdb.academicYear}</p>
-              <h2 id="judul-ppdb" className="mt-2 font-serif text-3xl leading-tight text-navy-900 sm:text-4xl">
-                Mulai petualangan si kecil
-                <span className="block">bersama kami</span>
-              </h2>
-              <p className="mt-4 text-muted">{ppdb.announcement}</p>
 
-              <div className="mt-6 max-w-sm">
-                <div className="mb-2 flex justify-between text-sm font-bold text-navy-900">
-                  <span>Kuota terisi</span>
-                  <span>
-                    {formatNumber(summary.totalAccepted)} / {formatNumber(summary.quota)}
-                  </span>
-                </div>
-                <ProgressBar value={summary.quotaFilledPercent} label="Persentase kuota terisi" />
-              </div>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                <ButtonLink href="/ppdb" variant="gold" arrow>
-                  Daftar sekarang
-                </ButtonLink>
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2.5 rounded-md border border-navy-900 px-5 py-3 text-xs font-bold uppercase tracking-wider text-navy-900 hover:bg-navy-50"
-                >
-                  <ChatIcon className="size-4" />
-                  Tanya via WhatsApp
-                </a>
-              </div>
+            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <ButtonLink href="/ppdb" variant="gold" arrow>
+                Daftar sekarang
+              </ButtonLink>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center gap-2 text-sm font-semibold text-navy-900 underline-offset-4 hover:underline"
+              >
+                <ChatIcon className="size-4" />
+                Tanya via WhatsApp
+              </a>
             </div>
-          </div>
+          </Reveal>
         </Container>
-      </section>
+      </Section>
 
-      <section aria-labelledby="judul-kabar" className="py-20">
+      <Section id="judul-kabar" tone="cream">
         <Container>
-          <SectionHeading id="judul-kabar" eyebrow="Kabar sekolah" title="Pengumuman terbaru" />
-          <div className="mt-10">
+          <Reveal>
+            <SectionHeading id="judul-kabar" eyebrow="Kabar sekolah" title="Pengumuman terbaru" />
+          </Reveal>
+          <div className="mt-12">
             <AnnouncementList announcements={announcements} />
           </div>
         </Container>
-      </section>
+      </Section>
     </>
   );
 }
