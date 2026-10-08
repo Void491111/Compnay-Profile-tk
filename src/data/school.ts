@@ -31,11 +31,36 @@ export const schoolProfile: SchoolProfile = {
 };
 
 export const highlights: readonly Highlight[] = [
-  { id: "h1", title: "Belajar lewat bermain", icon: "puzzle" },
-  { id: "h2", title: "Guru terlatih", icon: "teacher" },
-  { id: "h3", title: "Karakter sejak dini", icon: "heart" },
-  { id: "h4", title: "Dekat dengan alam", icon: "leaf" },
-  { id: "h5", title: "Aman & nyaman", icon: "shield" },
+  {
+    id: "h1",
+    title: "Belajar lewat bermain",
+    description: "Kurikulum Merdeka dengan pendekatan bermain yang bermakna.",
+    icon: "puzzle",
+  },
+  {
+    id: "h2",
+    title: "Guru terlatih",
+    description: "Pendidik yang sabar dan rutin mengikuti pelatihan.",
+    icon: "teacher",
+  },
+  {
+    id: "h3",
+    title: "Karakter sejak dini",
+    description: "Pembiasaan sopan santun, mandiri, dan peduli setiap hari.",
+    icon: "heart",
+  },
+  {
+    id: "h4",
+    title: "Dekat dengan alam",
+    description: "Berkebun dan bermain di luar ruang mengenal lingkungan.",
+    icon: "leaf",
+  },
+  {
+    id: "h5",
+    title: "Aman & nyaman",
+    description: "Lingkungan terpantau dengan pendampingan guru penuh.",
+    icon: "shield",
+  },
 ];
 
 export const programs: readonly Program[] = [

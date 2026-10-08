@@ -79,7 +79,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="mt-16 border-t border-line pt-10 sm:mt-20">
+          <div className="mt-12 sm:mt-16">
             <h2 className="sr-only">Keunggulan sekolah</h2>
             <HighlightStrip highlights={highlights} />
           </div>

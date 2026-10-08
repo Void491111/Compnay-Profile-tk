@@ -7,11 +7,21 @@ import type { Announcement, Facility, GalleryCategory, GalleryItem, Highlight, P
 
 export function HighlightStrip({ highlights }: { highlights: readonly Highlight[] }) {
   return (
-    <ul className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
+    <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
       {highlights.map((highlight, index) => (
-        <Reveal as="li" key={highlight.id} delay={index * 0.05} className="flex items-center gap-3">
-          <HighlightIcon name={highlight.icon} className="size-6 shrink-0 text-gold-500" />
-          <span className="text-sm font-medium text-navy-900">{highlight.title}</span>
+        <Reveal
+          as="li"
+          key={highlight.id}
+          delay={index * 0.05}
+          className="flex items-start gap-4 rounded-2xl bg-navy-900 p-5 sm:last:col-span-2 lg:flex-col lg:items-center lg:px-4 lg:py-7 lg:text-center lg:last:col-span-1"
+        >
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-full border border-gold-400/60">
+            <HighlightIcon name={highlight.icon} className="size-6 text-gold-400" />
+          </span>
+          <div className="min-w-0">
+            <h3 className="font-heading text-base font-semibold text-white">{highlight.title}</h3>
+            <p className="mt-1 text-sm leading-relaxed text-navy-100/80 lg:mt-2">{highlight.description}</p>
+          </div>
         </Reveal>
       ))}
     </ul>
